@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Domain.DTOs;
+using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,6 @@ namespace Application.LogicInterfaces
 {
     public interface IUserLogic
     {
+        Task<User> CreateAsync(UserCreationDTO dto);
     }
 }
