@@ -11,6 +11,8 @@ namespace Application.DAOInterfaces
     public interface IUserDAO
     {
         Task<User> CreateAsync(User user);
+        Task UpdateAsync(User user);
         Task<User?> GetByEmailAsync(string eMail);
+        Task<User?> GetByIdAsync(ulong id);
     }
 }

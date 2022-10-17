@@ -42,6 +42,41 @@ namespace Application.Logic
             return created;
         }
 
+        public async Task UpdateAsync(UserUpdateDTO dto)
+        {
+            User? existing = await userDAO.GetByIdAsync(dto.Id);
+
+            if (existing == null)
+            {
+                throw new Exception($"User with ID {dto.Id} not found!");
+            }
+
+            string password = existing.Password;
+
+            if(!string.IsNullOrEmpty(dto.Password))
+            {
+                ValidatePassword(dto.Password);
+                if (existing.Password.Equals(dto.Password))
+                {
+                    throw new Exception("New password cannot be the same as your old one.");
+                }
+
+                password = dto.Password;
+            }
+
+            // TODO: Implement recurring availability validation
+            Dictionary<string, Tuple<DateTime, DateTime>> availability = dto.RecurAvailablity ?? existing.RecurAvailablity;
+
+            User user = new User()
+            {
+                Id = dto.Id,
+                Password = password,
+                RecurAvailablity = availability
+            };
+             
+            await userDAO.UpdateAsync(user);
+        }
+
         private void ValidateData(UserCreationDTO dto)
         {
             Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
@@ -56,26 +91,32 @@ namespace Application.Logic
                 throw new Exception("Full name must not be empty");
             }
 
-            if (string.IsNullOrEmpty(dto.Password))
-            {
-                throw new Exception("Password must not be empty");
-            }
 
             if (emailVal.IsMatch(dto.Email)) {
                 throw new Exception("Please input correct email.");
             }
 
-            if(!dto.Password.Any(ch => ! Char.IsLetterOrDigit(ch)))
+            if (string.IsNullOrEmpty(dto.Password))
+            {
+                throw new Exception("Password must not be empty");
+            }
+
+            ValidatePassword(dto.Password);
+        }
+
+        private void ValidatePassword(string Password)
+        {
+            if (!Password.Any(ch => !Char.IsLetterOrDigit(ch)))
             {
                 throw new Exception("Password must contain at least one special character.");
             }
 
-            if(!dto.Password.Any(ch => Char.IsDigit(ch)))
+            if (!Password.Any(ch => Char.IsDigit(ch)))
             {
                 throw new Exception("Password must contain at least one digit.");
             }
 
-            if (!dto.Password.Any(ch => Char.IsUpper(ch)))
+            if (!Password.Any(ch => Char.IsUpper(ch)))
             {
                 throw new Exception("Password must contain at least one upper case character.");
             }
