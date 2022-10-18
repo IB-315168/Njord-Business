@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("/authenticate")]
+        [HttpPost("authenticate")]
         public async Task<ActionResult<User>> LoginAsync(UserLoginDTO dto)
         {
             try

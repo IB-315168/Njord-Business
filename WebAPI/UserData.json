@@ -27,6 +27,13 @@
       "Email": "test@gmail.com",
       "UserName": "igor_bu#4",
       "Password": "test!1A"
+    },
+    {
+      "Id": 5,
+      "FullName": "Test Igor",
+      "Email": "test_acc@gmail.com",
+      "UserName": "test_ig#5",
+      "Password": "Test1!"
     }
   ]
 }
