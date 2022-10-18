@@ -94,6 +94,7 @@ namespace Application.Logic
         private void ValidateData(UserCreationDTO dto)
         {
             Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+            Regex fullNameVal = new Regex(@"(^[A-Za-z]{2,16})([ ])([A-Za-z]{2,16})");
 
             if (string.IsNullOrEmpty(dto.Email))
             {
@@ -105,8 +106,12 @@ namespace Application.Logic
                 throw new Exception("Full name must not be empty");
             }
 
+            if(!fullNameVal.IsMatch(dto.FullName))
+            {
+                throw new Exception("Full name should consist only of latin alphabet letters (A-Z, a-z) and should not contain any special characters (!,@,#,$,...) or digits.");
+            }
 
-            if (emailVal.IsMatch(dto.Email)) {
+            if (!emailVal.IsMatch(dto.Email)) {
                 throw new Exception("Please input correct email.");
             }
 

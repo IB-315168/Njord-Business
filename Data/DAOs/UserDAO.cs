@@ -22,7 +22,8 @@ public class UserDAO : IUserDAO
         user.Id = userId;
 
         string[] name = user.FullName.Split(' ');
-        string userName = name[0].ToLower() + name[1].Substring(0,2).ToLower() + userId;
+        string userName = $"{name[0].ToLower()}_{name[1].Substring(0, 2).ToLower()}#{userId}";
+        user.UserName = userName;
 
         context.Users.Add(user);
         context.SaveChanges();

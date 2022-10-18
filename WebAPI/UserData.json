@@ -6,6 +6,20 @@
       "Email": "string",
       "UserName": null,
       "Password": "String@1"
+    },
+    {
+      "Id": 2,
+      "FullName": "Testing out",
+      "Email": "string1",
+      "UserName": "testing_ou#2",
+      "Password": "stringA!1"
+    },
+    {
+      "Id": 3,
+      "FullName": "Igor Bulinski",
+      "Email": "string12@gmail.com",
+      "UserName": "igor_bu#3",
+      "Password": "stringA1!"
     }
   ]
 }
