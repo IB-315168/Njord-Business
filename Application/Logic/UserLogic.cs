@@ -70,6 +70,9 @@ namespace Application.Logic
             User user = new User()
             {
                 Id = dto.Id,
+                FullName = existing.FullName,
+                Email = existing.Email,
+                UserName = existing.UserName,
                 Password = password,
                 RecurAvailablity = availability
             };
