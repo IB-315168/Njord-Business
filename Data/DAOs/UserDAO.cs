@@ -20,8 +20,10 @@ public class UserDAO : IUserDAO
             userId++;
         }
         user.Id = userId;
-        string username;
-       // user.FullName.Substring(0, user.FullName.First(c => c.Equals(' ')));
+
+        string[] name = user.FullName.Split(' ');
+        string userName = name[0].ToLower() + name[1].Substring(0,2).ToLower() + userId;
+
         context.Users.Add(user);
         context.SaveChanges();
         
@@ -31,19 +33,27 @@ public class UserDAO : IUserDAO
     public Task UpdateAsync(User user) //with return
     {
         User? existing = context.Users.FirstOrDefault(u => u.Id == user.Id);
-        if (existing==null)
+        if (existing == null)
         {
-            throw new Exception($"user with id{user.Id} has not been found");
+            throw new Exception($"User with id {user.Id} has not been found");
         }
+
         context.Users.Remove(existing);
         context.Users.Add(user);
         context.SaveChanges();
+
         return Task.CompletedTask;
     }
 
     public async Task DeleteAsync(User user) //asyn
     {
         User? existing = context.Users.FirstOrDefault(u => u.Id == user.Id);
+
+        if(existing == null)
+        {
+            throw new Exception($"User with id {user.Id} has not been found");
+        }
+
         context.Users.Remove(existing);
     }
 
