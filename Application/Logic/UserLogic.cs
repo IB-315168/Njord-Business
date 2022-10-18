@@ -108,7 +108,7 @@ namespace Application.Logic
 
             if(!fullNameVal.IsMatch(dto.FullName))
             {
-                throw new Exception("Full name should consist only of latin alphabet letters (A-Z, a-z) and should not contain any special characters (!,@,#,$,...) or digits.");
+                throw new Exception("Full name: \n- should consist only of latin alphabet letters (A-Z, a-z)\n- should not contain any special characters (!,@,#,$,...) or digits\n- should be in format \"FirstName LastName\"");
             }
 
             if (!emailVal.IsMatch(dto.Email)) {

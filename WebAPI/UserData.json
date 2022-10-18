@@ -20,6 +20,13 @@
       "Email": "string12@gmail.com",
       "UserName": "igor_bu#3",
       "Password": "stringA1!"
+    },
+    {
+      "Id": 4,
+      "FullName": "Igor Bulinski",
+      "Email": "test@gmail.com",
+      "UserName": "igor_bu#4",
+      "Password": "test!1A"
     }
   ]
 }
