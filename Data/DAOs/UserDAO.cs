@@ -37,7 +37,7 @@ public class UserDAO : IUserDAO
         return Task.FromResult(existing);
     }
 
-    public async Task DeleteAsync(User user) //asy
+    public async Task DeleteAsync(User user) //asyn
     {
         User? existing = context.Users.FirstOrDefault(u => u.Id == user.Id);
         context.Users.Remove(existing);
