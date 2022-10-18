@@ -32,6 +32,20 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpPost("/authenticate")]
+        public async Task<ActionResult<User>> LoginAsync(UserLoginDTO dto)
+        {
+            try
+            {
+                return await userLogic.LoginAsync(dto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
+
         [HttpPatch]
         public async Task<ActionResult> UpdateAsync([FromBody] UserUpdateDTO dto)
         {

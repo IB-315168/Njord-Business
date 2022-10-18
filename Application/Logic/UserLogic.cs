@@ -93,13 +93,7 @@ namespace Application.Logic
 
         private void ValidateData(UserCreationDTO dto)
         {
-            Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
             Regex fullNameVal = new Regex(@"(^[A-Za-z]{2,16})([ ])([A-Za-z]{2,16})");
-
-            if (string.IsNullOrEmpty(dto.Email))
-            {
-                throw new Exception("Email must not be empty");
-            }
 
             if (string.IsNullOrEmpty(dto.FullName))
             {
@@ -111,16 +105,28 @@ namespace Application.Logic
                 throw new Exception("Full name: \n- should consist only of latin alphabet letters (A-Z, a-z)\n- should not contain any special characters (!,@,#,$,...) or digits\n- should be in format \"FirstName LastName\"");
             }
 
-            if (!emailVal.IsMatch(dto.Email)) {
-                throw new Exception("Please input correct email.");
-            }
-
             if (string.IsNullOrEmpty(dto.Password))
             {
                 throw new Exception("Password must not be empty");
             }
 
+            ValidateEmail(dto.Email);
             ValidatePassword(dto.Password);
+        }
+
+        private void ValidateEmail(string email)
+        {
+            Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new Exception("Email must not be empty");
+            }
+
+            if (!emailVal.IsMatch(email))
+            {
+                throw new Exception("Please input correct email.");
+            }
         }
 
         private void ValidatePassword(string Password)
@@ -139,6 +145,25 @@ namespace Application.Logic
             {
                 throw new Exception("Password must contain at least one upper case character.");
             }
+        }
+
+        public async Task<User> LoginAsync(UserLoginDTO dto)
+        {
+            ValidateEmail(dto.Email);
+
+            User? existing = await userDAO.GetByEmailAsync(dto.Email);
+
+            if (existing == null)
+            {
+                throw new Exception("Account with that email does not exist.");
+            }
+
+            if (!dto.Password.Equals(existing.Password))
+            {
+                throw new Exception("Password incorrect.");
+            }
+
+            return existing;
         }
     }
 }

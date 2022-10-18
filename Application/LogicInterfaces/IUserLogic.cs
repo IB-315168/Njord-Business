@@ -11,6 +11,7 @@ namespace Application.LogicInterfaces
     public interface IUserLogic
     {
         Task<User> CreateAsync(UserCreationDTO dto);
+        Task<User> LoginAsync(UserLoginDTO dto);
         Task UpdateAsync(UserUpdateDTO dto);
         Task DeleteAsync(ulong id);
     }
