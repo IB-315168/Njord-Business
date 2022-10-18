@@ -80,12 +80,12 @@ namespace Application.Logic
             await userDAO.UpdateAsync(user);
         }
 
-        public async Task DeleteAsync(UserDeleteDTO dto)
+        public async Task DeleteAsync(ulong id)
         {
-            User? existing = await userDAO.GetByIdAsync(dto.Id);
+            User? existing = await userDAO.GetByIdAsync(id);
             if (existing == null)
             {
-                throw new Exception($"User with ID {dto.Id} not found!");
+                throw new Exception($"User with ID {id} not found!");
             }
 
             await userDAO.DeleteAsync(existing);
