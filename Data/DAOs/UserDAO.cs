@@ -13,14 +13,15 @@ public class UserDAO : IUserDAO
     }
     public Task<User> CreateAsync(User user)
     {
-        int userId = 1;
+        ulong userId = 1;
         if (context.Users.Any())
         {
-            userId = (int)context.Users.Max(u => u.Id); //cast
+            userId = context.Users.Max(u => u.Id); 
             userId++;
         }
-        user.Id = (ulong)userId; // cast
-        
+        user.Id = userId;
+        string username;
+       // user.FullName.Substring(0, user.FullName.First(c => c.Equals(' ')));
         context.Users.Add(user);
         context.SaveChanges();
         
