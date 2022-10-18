@@ -1,5 +1,7 @@
 using Application.DAOInterfaces;
 using Application.Logic;
+using Data;
+using Data.DAOs;
 using Application.LogicInterfaces;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,9 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//TODO: Uncomment once DAO implemented
-//builder.Services.AddScoped<FileContext>();
-//builder.Services.AddScoped<IUserDAO, UserFileDAO>();
+builder.Services.AddScoped<FileContext>();
+builder.Services.AddScoped<IUserDAO, UserDAO>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 
 var app = builder.Build();
