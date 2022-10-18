@@ -77,6 +77,17 @@ namespace Application.Logic
             await userDAO.UpdateAsync(user);
         }
 
+        public async Task DeleteAsync(UserDeleteDTO dto)
+        {
+            User? existing = await userDAO.GetByIdAsync(dto.Id);
+            if (existing == null)
+            {
+                throw new Exception($"User with ID {dto.Id} not found!");
+            }
+
+            await userDAO.DeleteAsync(existing);
+        }
+
         private void ValidateData(UserCreationDTO dto)
         {
             Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");

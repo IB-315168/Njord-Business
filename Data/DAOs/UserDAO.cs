@@ -27,7 +27,7 @@ public class UserDAO : IUserDAO
         return Task.FromResult(user);
     }
 
-    public Task UpdateAsync(User user)
+    public Task UpdateAsync(User user) //with return
     {
         User? existing = context.Users.FirstOrDefault(u => u.Id == user.Id);
         existing.FullName = user.FullName;
@@ -35,6 +35,12 @@ public class UserDAO : IUserDAO
         existing.UserName = user.UserName;
         existing.Password = user.Password;
         return Task.FromResult(existing);
+    }
+
+    public async Task DeleteAsync(User user) //async
+    {
+        User? existing = context.Users.FirstOrDefault(u => u.Id == user.Id);
+        context.Users.Remove(existing);
     }
 
     public Task<User?> GetByEmailAsync(string eMail)

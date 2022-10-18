@@ -12,5 +12,6 @@ namespace Application.LogicInterfaces
     {
         Task<User> CreateAsync(UserCreationDTO dto);
         Task UpdateAsync(UserUpdateDTO dto);
+        Task DeleteAsync(UserDeleteDTO dto);
     }
 }
