@@ -8,11 +8,13 @@ namespace Domain.DTOs
 {
     public class UserUpdateDTO
     {
-        public ulong Id { get; }
+        public int Id { get; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
         public Dictionary<string, Tuple<DateTime, DateTime>> RecurAvailablity;
 
-        public UserUpdateDTO(ulong Id)
+        public UserUpdateDTO(int Id)
         {
             this.Id = Id;
         }

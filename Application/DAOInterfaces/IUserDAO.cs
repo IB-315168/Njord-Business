@@ -14,6 +14,7 @@ namespace Application.DAOInterfaces
         Task UpdateAsync(User user);
         Task DeleteAsync(User user);
         Task<User?> GetByEmailAsync(string eMail);
-        Task<User?> GetByIdAsync(ulong id);
+        Task<User?> GetByUserNameAsync(string userName);
+        Task<User?> GetByIdAsync(int id);
     }
 }

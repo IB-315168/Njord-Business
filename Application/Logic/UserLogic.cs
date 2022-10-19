@@ -19,19 +19,12 @@ namespace Application.Logic
         {
             this.userDAO = userDAO;
         }
-        //UNDONE: Awaiting DAO implementation
         public async Task<User> CreateAsync(UserCreationDTO dto)
         {
-            // TODO: Decide on which Getter method should be used for retrieveing user
-            User? existing = await userDAO.GetByEmailAsync(dto.Email);
-
-            if (existing != null)
-                throw new Exception("E-mail address already in use");
-
             ValidateData(dto);
-            // TODO: Assign Id and generate UserName in DAO
             User toCreate = new User
             {
+                UserName = dto.UserName,
                 FullName = dto.FullName,
                 Email = dto.Email,
                 Password = dto.Password,
@@ -52,17 +45,33 @@ namespace Application.Logic
             }
 
             string password = existing.Password;
-
-            if(!string.IsNullOrEmpty(dto.Password))
+            if (!string.IsNullOrEmpty(dto.Password))
             {
-                ValidatePassword(dto.Password);
-                if (existing.Password.Equals(dto.Password))
+                if (!password.Equals(dto.Password))
                 {
-                    throw new Exception("New password cannot be the same as your old one.");
+                    ValidatePassword(dto.Password);
+                    password = dto.Password;
                 }
-
-                password = dto.Password;
             }
+
+            string email = existing.Email;
+            if(!string.IsNullOrEmpty(dto.Email))
+            {
+                if(!email.Equals(dto.Email))
+                {
+                    ValidateEmail(dto.Email);
+                }
+            }
+
+            string username = existing.UserName;
+            if(!string.IsNullOrEmpty(dto.UserName))
+            {
+                if(!username.Equals(dto.UserName))
+                {
+                    ValidateUsername(dto.UserName);
+                }
+            }
+
 
             // TODO: Implement recurring availability validation
             Dictionary<string, Tuple<DateTime, DateTime>> availability = dto.RecurAvailablity ?? existing.RecurAvailablity;
@@ -71,16 +80,16 @@ namespace Application.Logic
             {
                 Id = dto.Id,
                 FullName = existing.FullName,
-                Email = existing.Email,
-                UserName = existing.UserName,
+                Email = email,
+                UserName = username,
                 Password = password,
                 RecurAvailablity = availability
             };
-             
+
             await userDAO.UpdateAsync(user);
         }
 
-        public async Task DeleteAsync(ulong id)
+        public async Task DeleteAsync(int id)
         {
             User? existing = await userDAO.GetByIdAsync(id);
             if (existing == null)
@@ -100,21 +109,17 @@ namespace Application.Logic
                 throw new Exception("Full name must not be empty");
             }
 
-            if(!fullNameVal.IsMatch(dto.FullName))
+            if (!fullNameVal.IsMatch(dto.FullName))
             {
                 throw new Exception("Full name: \n- should consist only of latin alphabet letters (A-Z, a-z)\n- should not contain any special characters (!,@,#,$,...) or digits\n- should be in format \"FirstName LastName\"");
             }
 
-            if (string.IsNullOrEmpty(dto.Password))
-            {
-                throw new Exception("Password must not be empty");
-            }
-
             ValidateEmail(dto.Email);
             ValidatePassword(dto.Password);
+            ValidateUsername(dto.UserName);
         }
 
-        private void ValidateEmail(string email)
+        private async void ValidateEmail(string email)
         {
             Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
@@ -127,10 +132,22 @@ namespace Application.Logic
             {
                 throw new Exception("Please input correct email.");
             }
+
+            User? eExisting = await userDAO.GetByEmailAsync(email);
+
+            if (eExisting != null)
+            {
+                throw new Exception("E-mail address already in use");
+            }
         }
 
         private void ValidatePassword(string Password)
         {
+            if (string.IsNullOrEmpty(Password))
+            {
+                throw new Exception("Password must not be empty");
+            }
+
             if (!Password.Any(ch => !Char.IsLetterOrDigit(ch)))
             {
                 throw new Exception("Password must contain at least one special character.");
@@ -147,6 +164,25 @@ namespace Application.Logic
             }
         }
 
+        private async void ValidateUsername(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new Exception("Username must not be empty");
+            }
+
+            if (username.Length < 5 || username.Length > 20)
+            {
+                throw new Exception("Username must be between 5 and 20 characters.");
+            }
+
+            User? uExisting = await userDAO.GetByUserNameAsync(username);
+
+            if (uExisting != null)
+            {
+                throw new Exception("Username address already in use");
+            }
+        }
         public async Task<User> LoginAsync(UserLoginDTO dto)
         {
             ValidateEmail(dto.Email);
