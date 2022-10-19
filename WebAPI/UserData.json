@@ -1,13 +1,6 @@
 {
   "Users": [
     {
-      "Id": 1,
-      "FullName": "string",
-      "Email": "string",
-      "UserName": null,
-      "Password": "String@1"
-    },
-    {
       "Id": 2,
       "FullName": "Testing out",
       "Email": "string1",
@@ -46,6 +39,27 @@
       "Id": 7,
       "FullName": "string asdafs",
       "Email": "string1234@gmail.com",
+      "UserName": "string",
+      "Password": "Test1!"
+    },
+    {
+      "Id": 8,
+      "FullName": "string asddas",
+      "Email": "string5678@gmail.com",
+      "UserName": "string",
+      "Password": "Test1!"
+    },
+    {
+      "Id": 9,
+      "FullName": "string asdfds",
+      "Email": "string7890@gmail.com",
+      "UserName": "string",
+      "Password": "Test1!"
+    },
+    {
+      "Id": 10,
+      "FullName": "string asdfds",
+      "Email": "string5678@gmail.com",
       "UserName": "string",
       "Password": "Test1!"
     }

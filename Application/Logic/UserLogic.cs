@@ -22,6 +22,22 @@ namespace Application.Logic
         public async Task<User> CreateAsync(UserCreationDTO dto)
         {
             ValidateData(dto);
+
+            User? eExisting = await userDAO.GetByEmailAsync(dto.Email);
+
+            if (eExisting != null)
+            {
+                throw new Exception("E-mail address already in use");
+            }
+
+            User? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
+
+            if (uExisting != null)
+            {
+                throw new Exception("Username already in use");
+            }
+
+
             User toCreate = new User
             {
                 UserName = dto.UserName,
@@ -63,6 +79,13 @@ namespace Application.Logic
                 }
             }
 
+            User? eExisting = await userDAO.GetByEmailAsync(dto.Email);
+
+            if (eExisting != null)
+            {
+                throw new Exception("E-mail address already in use");
+            }
+
             string username = existing.UserName;
             if(!string.IsNullOrEmpty(dto.UserName))
             {
@@ -70,6 +93,13 @@ namespace Application.Logic
                 {
                     ValidateUsername(dto.UserName);
                 }
+            }
+
+            User? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
+
+            if (uExisting != null)
+            {
+                throw new Exception("Username already in use");
             }
 
 
@@ -119,7 +149,7 @@ namespace Application.Logic
             ValidateUsername(dto.UserName);
         }
 
-        private async void ValidateEmail(string email)
+        private void ValidateEmail(string email)
         {
             Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
@@ -131,13 +161,6 @@ namespace Application.Logic
             if (!emailVal.IsMatch(email))
             {
                 throw new Exception("Please input correct email.");
-            }
-
-            User? eExisting = await userDAO.GetByEmailAsync(email);
-
-            if (eExisting != null)
-            {
-                throw new Exception("E-mail address already in use");
             }
         }
 
@@ -174,13 +197,6 @@ namespace Application.Logic
             if (username.Length < 5 || username.Length > 20)
             {
                 throw new Exception("Username must be between 5 and 20 characters.");
-            }
-
-            User? uExisting = await userDAO.GetByUserNameAsync(username);
-
-            if (uExisting != null)
-            {
-                throw new Exception("Username address already in use");
             }
         }
         public async Task<User> LoginAsync(UserLoginDTO dto)

@@ -57,7 +57,7 @@ public class UserDAO : IUserDAO
 
     public Task<User?> GetByEmailAsync(string eMail)
     {
-        User? existing = context.Users.FirstOrDefault(u => u.Email == eMail);
+        User? existing = context.Users.FirstOrDefault(u => u.Email.Equals(eMail));
         return Task.FromResult(existing);
     }
 
@@ -69,7 +69,7 @@ public class UserDAO : IUserDAO
 
     public Task<User?> GetByUserNameAsync(string userName)
     {
-        User? existing = context.Users.FirstOrDefault(u => u.UserName == userName);
+        User? existing = context.Users.FirstOrDefault(u => u.UserName.Equals(userName));
         return Task.FromResult(existing);
     }
 }
