@@ -43,7 +43,7 @@ public class UserDAO : IUserDAO
         return Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(User user) //asyn
+    public Task DeleteAsync(User user) //asyn
     {
         User? existing = context.Users.FirstOrDefault(u => u.Id == user.Id);
 
@@ -53,6 +53,7 @@ public class UserDAO : IUserDAO
         }
 
         context.Users.Remove(existing);
+        return Task.CompletedTask;
     }
 
     public Task<User?> GetByEmailAsync(string eMail)

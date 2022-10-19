@@ -217,5 +217,19 @@ namespace Application.Logic
 
             return existing;
         }
+
+        public async Task<UserBasicDTO> GetByIdAsync(int id)
+        {
+            User? existing = await userDAO.GetByIdAsync(id);
+
+            if(existing == null)
+            {
+                throw new Exception($"User with id {id} does not exist.");
+            }
+
+            UserBasicDTO userBasic = new UserBasicDTO(existing.Id, existing.FullName, existing.Email, existing.UserName, existing.RecurAvailablity);
+
+            return userBasic;
+        }
     }
 }

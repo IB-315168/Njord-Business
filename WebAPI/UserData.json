@@ -62,6 +62,13 @@
       "Email": "string5678@gmail.com",
       "UserName": "string",
       "Password": "Test1!"
+    },
+    {
+      "Id": 11,
+      "FullName": "Igor BB",
+      "Email": "string9000@gmail.com",
+      "UserName": "string12",
+      "Password": "Test1!"
     }
   ]
 }

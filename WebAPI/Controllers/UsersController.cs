@@ -32,6 +32,20 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<UserBasicDTO>> GetByIdAsync([FromRoute] int id)
+        {
+            try
+            {
+                return await userLogic.GetByIdAsync(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
+
         [HttpPost("authenticate")]
         public async Task<ActionResult<User>> LoginAsync(UserLoginDTO dto)
         {
