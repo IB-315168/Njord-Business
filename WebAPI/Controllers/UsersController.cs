@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult> UpdateAsync([FromBody] UserUpdateDTO dto)
+        public async Task<ActionResult> UpdateAsync(UserUpdateDTO dto)
         {
             try
             {

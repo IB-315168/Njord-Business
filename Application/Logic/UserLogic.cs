@@ -76,14 +76,15 @@ namespace Application.Logic
                 if(!email.Equals(dto.Email))
                 {
                     ValidateEmail(dto.Email);
+
+                    User? eExisting = await userDAO.GetByEmailAsync(dto.Email);
+
+                    if (eExisting != null)
+                    {
+                        throw new Exception("E-mail address already in use");
+                    }
+                    email = dto.Email;
                 }
-            }
-
-            User? eExisting = await userDAO.GetByEmailAsync(dto.Email);
-
-            if (eExisting != null)
-            {
-                throw new Exception("E-mail address already in use");
             }
 
             string username = existing.UserName;
@@ -92,16 +93,15 @@ namespace Application.Logic
                 if(!username.Equals(dto.UserName))
                 {
                     ValidateUsername(dto.UserName);
+                    User? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
+
+                    if (uExisting != null)
+                    {
+                        throw new Exception("Username already in use");
+                    }
+                    username = dto.UserName;
                 }
             }
-
-            User? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
-
-            if (uExisting != null)
-            {
-                throw new Exception("Username already in use");
-            }
-
 
             // TODO: Implement recurring availability validation
             Dictionary<string, Tuple<DateTime, DateTime>> availability = dto.RecurAvailablity ?? existing.RecurAvailablity;
