@@ -12,9 +12,9 @@ namespace Domain.DTOs
         public string FullName { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
-        public Dictionary<string, Tuple<DateTime, DateTime>> RecurAvailablity { get; set; }
+        public Dictionary<string, bool[]> RecurAvailablity { get; set; }
 
-        public UserBasicDTO(int id, string fullName, string email, string userName, Dictionary<string, Tuple<DateTime, DateTime>> recurAvailablity)
+        public UserBasicDTO(int id, string fullName, string email, string userName, Dictionary<string, bool[]> recurAvailablity)
         {
             Id = id;
             FullName = fullName;
