@@ -3,6 +3,7 @@ using Domain.DTOs;
 using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace WebAPI.Controllers
 {
@@ -66,6 +67,21 @@ namespace WebAPI.Controllers
             try
             {
                 await userLogic.UpdateAsync(dto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await userLogic.DeleteAsync(id);
                 return Ok();
             }
             catch (Exception e)

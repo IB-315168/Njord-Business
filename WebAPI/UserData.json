@@ -69,6 +69,13 @@
       "Email": "test_acc1@gmail.com",
       "UserName": "igor_bu#5",
       "Password": "Test1!"
+    },
+    {
+      "Id": 12,
+      "FullName": "Peter Velky",
+      "Email": "brko.hul@gmail.com",
+      "UserName": "brkobal420",
+      "Password": "Heslo1]"
     }
   ]
 }
