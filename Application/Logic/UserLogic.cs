@@ -104,7 +104,7 @@ namespace Application.Logic
             }
 
             // TODO: Implement recurring availability validation
-            Dictionary<string, Tuple<DateTime, DateTime>> availability = dto.RecurAvailablity ?? existing.RecurAvailablity;
+            Dictionary<string, bool[]> availability = dto.RecurAvailablity;
 
             User user = new User()
             {

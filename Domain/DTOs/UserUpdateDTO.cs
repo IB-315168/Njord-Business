@@ -12,7 +12,7 @@ namespace Domain.DTOs
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public Dictionary<string, Tuple<DateTime, DateTime>> RecurAvailablity { get; set; }
+        public Dictionary<string, bool[]> RecurAvailablity { get; set; }
 
         public UserUpdateDTO(int Id)
         {
