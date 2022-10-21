@@ -53,6 +53,7 @@ public class UserDAO : IUserDAO
         }
 
         context.Users.Remove(existing);
+        context.SaveChanges();
         return Task.CompletedTask;
     }
 
