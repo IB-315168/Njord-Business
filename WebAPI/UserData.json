@@ -70,5 +70,29 @@
       "UserName": "test_ig#3",
       "Password": "Test1!"
     }
+  ],
+  "Teams": [
+    {
+      "Id": 1,
+      "Name": "Testing Team",
+      "TeamLeaderId": 6,
+      "members": [
+        {
+          "Id": 5,
+          "FullName": "Test Igor",
+          "Email": "test_acc@gmail.com",
+          "UserName": "test_ig#3",
+          "Password": "Test1!"
+        },
+        {
+          "Id": 10,
+          "FullName": "string asdfds",
+          "Email": "string5678@gmail.com",
+          "UserName": "string",
+          "Password": "Test1!"
+        }
+
+      ]
+    }
   ]
 }
