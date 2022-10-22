@@ -31,8 +31,9 @@ public class TeamLogic : ITeamLogic
         User? existing = await userDao.GetByIdAsync(dto.TeamLeaderId);
         if (existing == null)
         {
-            throw new Exception("User with id does not exist");
+            throw new Exception($"User with id {dto.TeamLeaderId} does not exist");
         }
+
         Team toCreate = new Team
         {
             Name= dto.Name,
@@ -45,7 +46,7 @@ public class TeamLogic : ITeamLogic
         return created;
     }
 
-    public async Task<TeamBasicDTO> GetByIdAsync(int id)
+    public async Task<Team> GetByIdAsync(int id)
     {
         Team? existing = await teamDao.GetByIdAsync(id);
         
@@ -53,22 +54,28 @@ public class TeamLogic : ITeamLogic
         {
             throw new Exception($"Team with id {id} does not exist.");
         }
-        TeamBasicDTO teamBasic = new TeamBasicDTO(existing.Id, existing.Name, existing.TeamLeaderId, existing.members);
 
-        return teamBasic;
+        return existing;
     }
 
-    public async Task<TeamBasicDTO> GetByUserIdAsync(int id)
+    public async Task<IEnumerable<TeamBasicDTO>> GetByUserIdAsync(int id)
     {
-        Team? existing = await teamDao.GetByUserIdAsync(id);
-        
-        if(existing == null)
+        User? existing = await userDao.GetByIdAsync(id);
+
+        if (existing == null)
         {
             throw new Exception($"User with id {id} does not exist.");
         }
-        TeamBasicDTO teamBasic = new TeamBasicDTO(existing.Id, existing.Name, existing.TeamLeaderId, existing.members);
 
-        return teamBasic;
+        List<TeamBasicDTO> teams = new List<TeamBasicDTO>();
+        IEnumerable<Team> teamsFetched = await teamDao.GetByUserIdAsync(id);
+
+        foreach(Team team in teamsFetched)
+        {
+            teams.Add(new TeamBasicDTO(team.Id, team.Name, "Placeholder"));
+        }
+
+        return teams;
     }
 
 

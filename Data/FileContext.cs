@@ -20,24 +20,9 @@ public class FileContext
     {
         get
         {
-            LoadDataTeam();
+            LoadData();
             return dataContainer!.Teams;
         }
-    }
-    private void LoadDataTeam()
-    {
-        if (dataContainer != null) return;
-    
-        if (!File.Exists(filePath))
-        {
-            dataContainer = new ()
-            {
-                Teams = new List<Team>()
-            };
-            return;
-        }
-        string content = File.ReadAllText(filePath);
-        dataContainer = JsonSerializer.Deserialize<DataContainer>(content);
     }
     
     private void LoadData()

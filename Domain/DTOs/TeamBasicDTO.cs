@@ -4,16 +4,14 @@ namespace Domain.DTOs;
 
 public class TeamBasicDTO
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int TeamLeaderId { get; set; }
-    public ICollection<User> members { get; set; }
+    public int Id { get; }
+    public string Name { get; }
+    public string TeamLeaderName { get; }
 
-    public TeamBasicDTO(int id, string name, int teamLeaderId, ICollection<User> members)
+    public TeamBasicDTO(int id, string name, string teamLeaderName)
     {
         Id = id;
         Name = name;
-        TeamLeaderId = teamLeaderId;
-        this.members = members;
+        TeamLeaderName = teamLeaderName;
     }
 }

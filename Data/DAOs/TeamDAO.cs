@@ -1,12 +1,15 @@
 ﻿using Application.DAOInterfaces;
+using Domain.DTOs;
 using Domain.Models;
 
 namespace Data.DAOs;
 
+
+//TODO: Revise irrelevant methods
 public class TeamDAO : ITeamDAO
 {
     private readonly FileContext context;
-    
+
     public TeamDAO(FileContext context)
     {
         this.context = context;
@@ -14,17 +17,17 @@ public class TeamDAO : ITeamDAO
     public Task<Team> CreateAsync(Team team)
     {
         int teamId = 1;
-        
+
         if (context.Teams.Any())
         {
-            teamId = context.Teams.Max(u => u.Id); 
+            teamId = context.Teams.Max(u => u.Id);
             teamId++;
         }
         team.Id = teamId;
 
         context.Teams.Add(team);
         context.SaveChanges();
-        
+
         return Task.FromResult(team);
     }
 
@@ -43,15 +46,19 @@ public class TeamDAO : ITeamDAO
         return Task.FromResult(existing);
     }
 
-    public Task<Team> GetByIdAsync(int id)
+    public Task<Team?> GetByIdAsync(int id)
     {
         Team? existing = context.Teams.FirstOrDefault(u => u.Id.Equals(id));
         return Task.FromResult(existing);
     }
 
-    public Task<Team> GetByUserIdAsync(int id)
+    public Task<IEnumerable<Team>> GetByUserIdAsync(int id)
     {
-        Team? existing = context.Teams.FirstOrDefault(u => u.TeamLeaderId.Equals(id));
-        return Task.FromResult(existing);
+        IEnumerable<Team> teams = new List<Team>();
+
+        teams = teams.Concat(context.Teams.Where(s => s.TeamLeaderId == id));
+        teams = teams.Concat(context.Teams.Where(s => s.members.Any(u => u.Id == id)));
+
+        return Task.FromResult(teams);
     }
 }

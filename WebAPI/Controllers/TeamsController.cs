@@ -31,7 +31,7 @@ public class TeamsController :ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<TeamBasicDTO>> GetByIdAsync([FromRoute] int id)
+    public async Task<ActionResult<Team>> GetByIdAsync([FromRoute] int id)
     {   
         try
         {
@@ -45,11 +45,12 @@ public class TeamsController :ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<TeamBasicDTO>> GetByUserIdAsync([FromQuery]int userId)
+    public async Task<ActionResult<IEnumerable<TeamBasicDTO>>> GetByUserIdAsync([FromQuery] int userId)
     {   
         try
         {
-            return await teamLogic.GetByUserIdAsync(userId);
+            IEnumerable<TeamBasicDTO> teams = await teamLogic.GetByUserIdAsync(userId);
+            return Ok(teams);
         }
         catch (Exception e)
         {
