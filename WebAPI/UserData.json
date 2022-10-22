@@ -22,13 +22,6 @@
       "Password": "test!1A"
     },
     {
-      "Id": 5,
-      "FullName": "Test Igor",
-      "Email": "test_acc@gmail.com",
-      "UserName": "test_ig#5",
-      "Password": "Test1!"
-    },
-    {
       "Id": 7,
       "FullName": "string asdafs",
       "Email": "string1234@gmail.com",
@@ -68,6 +61,13 @@
       "FullName": "Igor Bulinski",
       "Email": "test_acc1@gmail.com",
       "UserName": "igor_bu#5",
+      "Password": "Test1!"
+    },
+    {
+      "Id": 5,
+      "FullName": "Test Igor",
+      "Email": "test_acc@gmail.com",
+      "UserName": "test_ig#3",
       "Password": "Test1!"
     }
   ]

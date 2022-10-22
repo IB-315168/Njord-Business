@@ -4,7 +4,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 [ApiController]
 public class TeamsController :ControllerBase
 {
@@ -16,7 +16,6 @@ public class TeamsController :ControllerBase
     }
 
     [HttpPost]
-    [ActionName("CreateAsync")]
     public async Task<ActionResult<Team>> CreateAsync(TeamCreateDTO dto)
     {
         try
@@ -32,7 +31,6 @@ public class TeamsController :ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [ActionName("GetByIdAsync")]
     public async Task<ActionResult<TeamBasicDTO>> GetByIdAsync([FromRoute] int id)
     {   
         try
@@ -45,9 +43,9 @@ public class TeamsController :ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-    [HttpGet("{id:int}")]
-    [ActionName("GetByUserIdAsync")]
-    public async Task<ActionResult<TeamBasicDTO>> GetByUserIdAsync([FromRoute]int id)
+
+    [HttpGet]
+    public async Task<ActionResult<TeamBasicDTO>> GetByUserIdAsync([FromQuery]int id)
     {   
         try
         {
