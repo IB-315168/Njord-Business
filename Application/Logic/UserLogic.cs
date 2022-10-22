@@ -15,7 +15,7 @@ namespace Application.Logic
     {
         private readonly IUserDAO userDAO;
 
-        public UserLogic(IUserDAO userDAO)
+        public UserLogic(IUserDAO userDAO)  
         {
             this.userDAO = userDAO;
         }

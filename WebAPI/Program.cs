@@ -15,8 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<FileContext>();
 builder.Services.AddScoped<IUserDAO, UserDAO>();
+builder.Services.AddScoped<ITeamDAO, TeamDAO>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
-
+builder.Services.AddScoped<ITeamLogic, TeamLogic>();
 var app = builder.Build();
 
 app.UseCors(x => x
