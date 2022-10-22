@@ -56,7 +56,7 @@ public class TeamDAO : ITeamDAO
     {
         IEnumerable<Team> teams = new List<Team>();
 
-        teams = teams.Concat(context.Teams.Where(s => s.TeamLeaderId == id));
+        teams = teams.Concat(context.Teams.Where(s => s.TeamLeader.Id == id));
         teams = teams.Concat(context.Teams.Where(s => s.members.Any(u => u.Id == id)));
 
         return Task.FromResult(teams);

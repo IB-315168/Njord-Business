@@ -29,6 +29,7 @@ public class TeamLogic : ITeamLogic
         }
 
         User? existing = await userDao.GetByIdAsync(dto.TeamLeaderId);
+
         if (existing == null)
         {
             throw new Exception($"User with id {dto.TeamLeaderId} does not exist");
@@ -36,8 +37,8 @@ public class TeamLogic : ITeamLogic
 
         Team toCreate = new Team
         {
-            Name= dto.Name,
-            TeamLeaderId =dto.TeamLeaderId,
+            Name = dto.Name,
+            TeamLeader = existing,
             members = new List<User>()
         };
 
@@ -72,7 +73,7 @@ public class TeamLogic : ITeamLogic
 
         foreach(Team team in teamsFetched)
         {
-            teams.Add(new TeamBasicDTO(team.Id, team.Name, "Placeholder"));
+            teams.Add(new TeamBasicDTO(team.Id, team.Name, $"{team.TeamLeader.FullName} ({team.TeamLeader.UserName})"));
         }
 
         return teams;
