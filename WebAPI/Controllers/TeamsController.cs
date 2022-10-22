@@ -30,12 +30,12 @@ public class TeamsController :ControllerBase
         }
     }
 
-    [HttpGet("{userId:int}")]
-    public async Task<ActionResult<TeamBasicDTO>> GetByIdAsync([FromRoute] int userId)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<TeamBasicDTO>> GetByIdAsync([FromRoute] int id)
     {   
         try
         {
-            return await teamLogic.GetByIdAsync(userId);
+            return await teamLogic.GetByIdAsync(id);
         }
         catch (Exception e)
         {
@@ -45,11 +45,11 @@ public class TeamsController :ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<TeamBasicDTO>> GetByUserIdAsync([FromQuery]int id)
+    public async Task<ActionResult<TeamBasicDTO>> GetByUserIdAsync([FromQuery]int userId)
     {   
         try
         {
-            return await teamLogic.GetByUserIdAsync(id);
+            return await teamLogic.GetByUserIdAsync(userId);
         }
         catch (Exception e)
         {
