@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                SearchUserParametersDTO parameters = new(username,fullname,email);
+                SearchUserParametersDTO parameters = new(username, email, fullname);
                 IEnumerable<User> users = await userLogic.GetByParameterAsync(parameters);
                 return Ok(users);
             }

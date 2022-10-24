@@ -72,10 +72,22 @@ public class UserDAO : IUserDAO
     public Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO searchParameters)
     {
         IEnumerable<User> users = context.Users.AsEnumerable();
-        if (searchParameters.UserName != null && searchParameters.Email!= null && searchParameters.FullName!=null)
+
+        if (searchParameters.UserName != null)
         {
             users = context.Users.Where(u => u.UserName.Contains(searchParameters.UserName, StringComparison.OrdinalIgnoreCase));
         }
+
+        if (searchParameters.Email != null)
+        {
+            users = context.Users.Where(u => u.Email.Contains(searchParameters.Email, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (searchParameters.FullName != null)
+        {
+            users = context.Users.Where(u => u.FullName.Contains(searchParameters.FullName, StringComparison.OrdinalIgnoreCase));
+        }
+
         return Task.FromResult(users);
     }
     public Task<User?> GetByUserNameAsync(string userName)
