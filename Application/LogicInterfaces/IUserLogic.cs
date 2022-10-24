@@ -15,5 +15,6 @@ namespace Application.LogicInterfaces
         Task<UserBasicDTO> GetByIdAsync(int id);
         Task UpdateAsync(UserUpdateDTO dto);
         Task DeleteAsync(int id);
+        public Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO searchParameters);
     }
 }

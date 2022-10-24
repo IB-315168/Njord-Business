@@ -1,4 +1,5 @@
 ﻿using Application.DAOInterfaces;
+using Domain.DTOs;
 using Domain.Models;
 
 namespace Data.DAOs;
@@ -68,7 +69,15 @@ public class UserDAO : IUserDAO
         User? existing = context.Users.FirstOrDefault(u => u.Id == id);
         return Task.FromResult(existing);
     }
-
+    public Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO searchParameters)
+    {
+        IEnumerable<User> users = context.Users.AsEnumerable();
+        if (searchParameters.UserName != null && searchParameters.Email!= null && searchParameters.FullName!=null)
+        {
+            users = context.Users.Where(u => u.UserName.Contains(searchParameters.UserName, StringComparison.OrdinalIgnoreCase));
+        }
+        return Task.FromResult(users);
+    }
     public Task<User?> GetByUserNameAsync(string userName)
     {
         User? existing = context.Users.FirstOrDefault(u => u.UserName.Equals(userName));

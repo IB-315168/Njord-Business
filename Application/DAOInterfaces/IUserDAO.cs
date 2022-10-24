@@ -16,5 +16,6 @@ namespace Application.DAOInterfaces
         Task<User?> GetByEmailAsync(string eMail);
         Task<User?> GetByUserNameAsync(string userName);
         Task<User?> GetByIdAsync(int id);
+        Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO dto);
     }
 }

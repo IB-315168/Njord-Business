@@ -90,5 +90,20 @@ namespace WebAPI.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAsync([FromQuery] string? username,string? fullname,string? email)
+        {
+            try
+            {
+                SearchUserParametersDTO parameters = new(username,fullname,email);
+                IEnumerable<User> users = await userLogic.GetByParameterAsync(parameters);
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }

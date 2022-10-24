@@ -231,5 +231,9 @@ namespace Application.Logic
 
             return userBasic;
         }
+        public Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO searchParameters)
+        {
+            return userDAO.GetByParameterAsync(searchParameters);
+        }
     }
 }
