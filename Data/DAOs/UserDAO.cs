@@ -1,6 +1,7 @@
 ﻿using Application.DAOInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using System.Linq;
 
 namespace Data.DAOs;
 
@@ -75,17 +76,17 @@ public class UserDAO : IUserDAO
 
         if (searchParameters.UserName != null)
         {
-            users = context.Users.Where(u => u.UserName.Contains(searchParameters.UserName, StringComparison.OrdinalIgnoreCase));
+            users = users.Intersect(context.Users.Where(u => u.UserName.Contains(searchParameters.UserName, StringComparison.OrdinalIgnoreCase)));
         }
 
         if (searchParameters.Email != null)
         {
-            users = context.Users.Where(u => u.Email.Contains(searchParameters.Email, StringComparison.OrdinalIgnoreCase));
+            users = users.Intersect(context.Users.Where(u => u.Email.Contains(searchParameters.Email, StringComparison.OrdinalIgnoreCase)));
         }
 
         if (searchParameters.FullName != null)
         {
-            users = context.Users.Where(u => u.FullName.Contains(searchParameters.FullName, StringComparison.OrdinalIgnoreCase));
+            users = users.Intersect(context.Users.Where(u => u.FullName.Contains(searchParameters.FullName, StringComparison.OrdinalIgnoreCase)));
         }
 
         return Task.FromResult(users);
