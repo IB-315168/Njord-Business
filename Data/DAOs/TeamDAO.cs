@@ -33,12 +33,32 @@ public class TeamDAO : ITeamDAO
 
     public Task DeleteAsync(Team team)
     {
-        throw new NotImplementedException();
-    }
+        Team? existing = context.Teams.FirstOrDefault(t => t.Id == team.Id);
 
+        if (existing == null)
+        {
+            throw new Exception($"Team with id{team.Id} has not been found");
+        }
+
+        context.Teams.Remove(existing);
+        context.SaveChanges();
+        return Task.CompletedTask;
+    }
+    
     public Task UpdateAsync(Team team)
     {
-        throw new NotImplementedException();
+        Team? existing = context.Teams.FirstOrDefault(u => u.Id == team.Id);
+
+        if (existing == null)
+        {
+            throw new Exception($"User with id {team.Id} has not been found");
+        }
+
+        context.Teams.Remove(existing);
+        context.Teams.Add(team);
+        context.SaveChanges();
+
+        return Task.CompletedTask;
     }
     public Task<Team?> GetByName(string name)
     {

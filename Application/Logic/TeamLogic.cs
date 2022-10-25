@@ -79,7 +79,80 @@ public class TeamLogic : ITeamLogic
         return teams;
     }
 
+    public async Task DeleteAsync(int id)
+    {
+        Team? existing = await teamDao.GetByIdAsync(id);
+        if (existing == null)
+        {
+            throw new Exception($"Team with ID {id} not found!");
+        }
 
+        await teamDao.DeleteAsync(existing);
+    }
+
+    public async Task UpdateAsync(TeamUpdateDTO dto)
+    {
+        Team? existing = await teamDao.GetByIdAsync(dto.Id);
+        
+        if (existing == null)
+        {
+            throw new Exception($"Team with ID {dto.Id} not found!");
+        }
+        
+        string name = existing.Name;
+        if (!string.IsNullOrEmpty(dto.Name))
+        {
+            if (!name.Equals(dto.Name))
+            {
+                ValidateName(dto.Name);
+                name = dto.Name;
+            }   
+        }
+        User teamLeader = existing.TeamLeader;
+        //check if new teamleader is part of a team
+        if (dto.members.Contains(teamLeader))
+        {
+            if (!teamLeader.Equals(dto.TeamLeader))
+            {
+                ValidateTeamLeader(dto.TeamLeader);
+                teamLeader = dto.TeamLeader;
+            }
+        }
+
+        ICollection<User> members = existing.members;
+        if (!members.Equals(dto.members))
+        {
+            members = dto.members;
+        }
+        Team updated = new Team()
+        {
+            Id = dto.Id,
+            members = dto.members,
+            Name = dto.Name,
+            TeamLeader = dto.TeamLeader
+        };
+        await teamDao.UpdateAsync(updated);
+    }
+    private async void ValidateName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new Exception("Name must not be empty");
+        }
+        //optional
+        if (name.Length < 5 || name.Length > 20)
+        {
+            throw new Exception("Name must be between 5 and 20 characters.");
+        }
+    }
+    //to string again
+    private async void ValidateTeamLeader(User teamLeader)
+    {
+        if (string.IsNullOrEmpty(teamLeader.ToString()))
+        {
+            throw new Exception("teamLeader must not be empty");
+        }
+    }
     private void ValidateData(TeamCreateDTO dto)
     {
         Regex NameVal = new Regex(@"(^[A-Za-z]{2,16})");
@@ -94,3 +167,6 @@ public class TeamLogic : ITeamLogic
         }
     }
 }
+
+
+

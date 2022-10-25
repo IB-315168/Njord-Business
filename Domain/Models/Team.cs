@@ -6,6 +6,4 @@ public class Team
     public string Name { get; set; }
     public User TeamLeader { get; set; }
     public ICollection<User> members { get; set; }
-
-
 }

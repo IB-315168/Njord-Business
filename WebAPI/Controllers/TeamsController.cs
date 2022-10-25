@@ -58,4 +58,32 @@ public class TeamsController :ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteAsync(int id)
+    {
+        try
+        {
+            await teamLogic.DeleteAsync(id);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    [HttpPatch]
+    public async Task<ActionResult> UpdateAsync(TeamUpdateDTO dto)
+    {
+        try
+        {
+            await teamLogic.UpdateAsync(dto);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 }
