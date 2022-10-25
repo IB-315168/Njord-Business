@@ -1,6 +1,7 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
@@ -39,20 +40,6 @@ namespace WebAPI.Controllers
             try
             {
                 return await userLogic.GetByIdAsync(id);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, e.Message);
-            }
-        }
-
-        [HttpPost("authenticate")]
-        public async Task<ActionResult<User>> LoginAsync(UserLoginDTO dto)
-        {
-            try
-            {
-                return await userLogic.LoginAsync(dto);
             }
             catch (Exception e)
             {

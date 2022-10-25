@@ -1,11 +1,13 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+//[Authorize]
 public class TeamsController :ControllerBase
 {
     private readonly ITeamLogic teamLogic;

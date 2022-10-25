@@ -149,7 +149,7 @@ namespace Application.Logic
             ValidateUsername(dto.UserName);
         }
 
-        private void ValidateEmail(string email)
+        public static void ValidateEmail(string email)
         {
             Regex emailVal = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
@@ -187,7 +187,7 @@ namespace Application.Logic
             }
         }
 
-        private async void ValidateUsername(string username)
+        private void ValidateUsername(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -198,24 +198,6 @@ namespace Application.Logic
             {
                 throw new Exception("Username must be between 5 and 20 characters.");
             }
-        }
-        public async Task<User> LoginAsync(UserLoginDTO dto)
-        {
-            ValidateEmail(dto.Email);
-
-            User? existing = await userDAO.GetByEmailAsync(dto.Email);
-
-            if (existing == null)
-            {
-                throw new Exception("Account with that email does not exist.");
-            }
-
-            if (!dto.Password.Equals(existing.Password))
-            {
-                throw new Exception("Password incorrect.");
-            }
-
-            return existing;
         }
 
         public async Task<UserBasicDTO> GetByIdAsync(int id)
