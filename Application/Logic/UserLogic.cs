@@ -19,7 +19,7 @@ namespace Application.Logic
         {
             this.userDAO = userDAO;
         }
-        public async Task<User> CreateAsync(UserCreationDTO dto)
+        public async Task<User> CreateAsync(UserCreateDTO dto)
         {
             ValidateData(dto);
 
@@ -130,7 +130,7 @@ namespace Application.Logic
             await userDAO.DeleteAsync(existing);
         }
 
-        private void ValidateData(UserCreationDTO dto)
+        private void ValidateData(UserCreateDTO dto)
         {
             Regex fullNameVal = new Regex(@"(^[A-Za-z]{2,16})([ ])([A-Za-z]{2,16})");
 

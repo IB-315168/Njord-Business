@@ -10,7 +10,7 @@ namespace Application.LogicInterfaces
 {
     public interface IUserLogic
     {
-        Task<User> CreateAsync(UserCreationDTO dto);
+        Task<User> CreateAsync(UserCreateDTO dto);
         Task<UserBasicDTO> GetByIdAsync(int id);
         Task UpdateAsync(UserUpdateDTO dto);
         Task DeleteAsync(int id);

@@ -19,10 +19,10 @@ public class TeamLogic : ITeamLogic
     }
 
     public async Task<Team> CreateAsync(TeamCreateDTO dto)
-    {   
-        //ValidateData(dto);
+    {
+        ValidateName(dto.Name);
         Team? eExisting = await teamDao.GetByName(dto.Name);
-        // to be discussed
+
         if (eExisting != null)
         {
             throw new Exception("Name already in use");
@@ -133,37 +133,24 @@ public class TeamLogic : ITeamLogic
         };
         await teamDao.UpdateAsync(updated);
     }
-    private async void ValidateName(string name)
+    private void ValidateName(string name)
     {
         if (string.IsNullOrEmpty(name))
         {
             throw new Exception("Name must not be empty");
         }
-        //optional
+        
         if (name.Length < 5 || name.Length > 20)
         {
             throw new Exception("Name must be between 5 and 20 characters.");
         }
     }
-    //to string again
-    private async void ValidateTeamLeader(User teamLeader)
+
+    private void ValidateTeamLeader(User teamLeader)
     {
         if (string.IsNullOrEmpty(teamLeader.ToString()))
         {
-            throw new Exception("teamLeader must not be empty");
-        }
-    }
-    private void ValidateData(TeamCreateDTO dto)
-    {
-        Regex NameVal = new Regex(@"(^[A-Za-z]{2,16})");
-
-        if (string.IsNullOrEmpty(dto.Name))
-        {
-            throw new Exception("Name must not be empty");
-        }
-        if (!NameVal.IsMatch(dto.Name))
-        {
-            throw new Exception("Name: \n- should consist only of latin alphabet letters (A-Z, a-z)\n- should not contain any special characters (!,@,#,$,...) or digits");
+            throw new Exception("Team Leader must not be empty");
         }
     }
 }

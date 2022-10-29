@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateAsync(UserCreationDTO dto)
+        public async Task<ActionResult<User>> CreateAsync(UserCreateDTO dto)
         {
             try
             {
