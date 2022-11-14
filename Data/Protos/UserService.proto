@@ -1,0 +1,60 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+option java_multiple_files = true;
+option csharp_namespace = "GrpcNjordClient";
+package com.sep3yg9.njorddata.grpc.protobuf.user;
+
+message CreatingUser {
+  string fullName = 1;
+  string userName = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message UpdatingUser {
+  int32 id = 1;
+  string userName = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message SearchingUser {
+  string userName = 1;
+  string email = 2;
+  string fullName = 3;
+}
+
+message BasicUser {
+  string fullName = 1;
+  string userName = 2;
+  string email = 3;
+}
+
+message BasicTeamRet {
+  int32 id = 1;
+  string name = 2;
+  string teamLeaderName = 3;
+}
+
+message User {
+  int32 id = 1;
+  string fullName = 2;
+  string email = 3;
+  string userName = 4;
+  string password = 5;
+  repeated BasicTeamRet userTeams = 6;
+}
+
+message UserList {
+  repeated User user = 1;
+}
+
+service UserService {
+  rpc CreateUser(CreatingUser) returns (User);
+  rpc UpdateUser(UpdatingUser) returns (google.protobuf.Empty);
+  rpc DeleteUser(google.protobuf.Int32Value) returns (google.protobuf.Empty);
+  rpc GetByEmail(google.protobuf.StringValue) returns (User);
+  rpc GetById(google.protobuf.Int32Value) returns (User);
+  rpc SearchUser(SearchingUser) returns (UserList);
+}

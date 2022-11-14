@@ -10,6 +10,6 @@ namespace Application.LogicInterfaces
 {
     public interface IAuthService
     {
-        Task<User> LoginAsync(UserLoginDTO dto);
+        Task<UserEntity> LoginAsync(UserLoginDTO dto);
     }
 }

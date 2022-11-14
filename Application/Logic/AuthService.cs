@@ -18,11 +18,11 @@ namespace Application.Logic
         {
             this.userDAO = userDAO;
         }
-        public async Task<User> LoginAsync(UserLoginDTO dto)
+        public async Task<UserEntity> LoginAsync(UserLoginDTO dto)
         {
             UserLogic.ValidateEmail(dto.Email);
 
-            User? existing = await userDAO.GetByEmailAsync(dto.Email);
+            UserEntity? existing = await userDAO.GetByEmailAsync(dto.Email);
 
             if (existing == null)
             {

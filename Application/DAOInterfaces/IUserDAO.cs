@@ -10,12 +10,13 @@ namespace Application.DAOInterfaces
 {
     public interface IUserDAO
     {
-        Task<User> CreateAsync(User user);
-        Task UpdateAsync(User user);
-        Task DeleteAsync(User user);
-        Task<User?> GetByEmailAsync(string eMail);
-        Task<User?> GetByUserNameAsync(string userName);
-        Task<User?> GetByIdAsync(int id);
-        Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO dto);
+        Task<UserEntity> CreateAsync(UserEntity user);
+        Task<Task> UpdateAsync(UserEntity user);
+        Task<Task> DeleteAsync(UserEntity user);
+        Task<UserEntity?> GetByEmailAsync(string eMail);
+        Task<UserEntity?> GetByUserNameAsync(string userName);
+        Task<UserEntity?> GetByIdAsync(int id);
+        Task<IEnumerable<UserEntity>> GetByParameterAsync(SearchUserParametersDTO dto);
+        Task<IEnumerable<TeamBasicDTO>> GetUserTeamsAsync(int id);
     }
 }

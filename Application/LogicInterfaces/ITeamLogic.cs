@@ -5,8 +5,8 @@ namespace Application.LogicInterfaces;
 
 public interface ITeamLogic
 {
-    Task<Team> CreateAsync(TeamCreateDTO dto);
-    Task<Team> GetByIdAsync(int id);
+    Task<TeamEntity> CreateAsync(TeamCreateDTO dto);
+    Task<TeamEntity> GetByIdAsync(int id);
     Task<IEnumerable<TeamBasicDTO>> GetByUserIdAsync(int id);
     Task DeleteAsync(int id);
     Task UpdateAsync(TeamUpdateDTO dto);

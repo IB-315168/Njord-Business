@@ -20,11 +20,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateAsync(UserCreateDTO dto)
+        public async Task<ActionResult<UserEntity>> CreateAsync(UserCreateDTO dto)
         {
             try
             {
-                User user = await userLogic.CreateAsync(dto);
+                UserEntity user = await userLogic.CreateAsync(dto);
                 return Created($"/users/{user.Id}", user);
             }
             catch (Exception e)
@@ -78,12 +78,12 @@ namespace WebAPI.Controllers
             }
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAsync([FromQuery] string? username,string? fullname,string? email)
+        public async Task<ActionResult<IEnumerable<UserEntity>>> GetAsync([FromQuery] string? username,string? fullname,string? email)
         {
             try
             {
                 SearchUserParametersDTO parameters = new(username, email, fullname);
-                IEnumerable<User> users = await userLogic.GetByParameterAsync(parameters);
+                IEnumerable<UserEntity> users = await userLogic.GetByParameterAsync(parameters);
                 return Ok(users);
             }
             catch (Exception e)

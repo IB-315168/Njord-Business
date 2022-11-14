@@ -19,26 +19,26 @@ namespace Application.Logic
         {
             this.userDAO = userDAO;
         }
-        public async Task<User> CreateAsync(UserCreateDTO dto)
+        public async Task<UserEntity> CreateAsync(UserCreateDTO dto)
         {
             ValidateData(dto);
 
-            User? eExisting = await userDAO.GetByEmailAsync(dto.Email);
+            UserEntity? eExisting = await userDAO.GetByEmailAsync(dto.Email);
 
             if (eExisting != null)
             {
                 throw new Exception("E-mail address already in use");
             }
 
-            User? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
+            //UserEntity? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
 
-            if (uExisting != null)
-            {
-                throw new Exception("Username already in use");
-            }
+            //if (uExisting != null)
+            //{
+            //    throw new Exception("Username already in use");
+            //}
 
 
-            User toCreate = new User
+            UserEntity toCreate = new UserEntity
             {
                 UserName = dto.UserName,
                 FullName = dto.FullName,
@@ -46,14 +46,14 @@ namespace Application.Logic
                 Password = dto.Password,
             };
 
-            User created = await userDAO.CreateAsync(toCreate);
+            UserEntity created = await userDAO.CreateAsync(toCreate);
 
             return created;
         }
 
         public async Task UpdateAsync(UserUpdateDTO dto)
         {
-            User? existing = await userDAO.GetByIdAsync(dto.Id);
+            UserEntity? existing = await userDAO.GetByIdAsync(dto.Id);
 
             if (existing == null)
             {
@@ -77,7 +77,7 @@ namespace Application.Logic
                 {
                     ValidateEmail(dto.Email);
 
-                    User? eExisting = await userDAO.GetByEmailAsync(dto.Email);
+                    UserEntity? eExisting = await userDAO.GetByEmailAsync(dto.Email);
 
                     if (eExisting != null)
                     {
@@ -93,12 +93,12 @@ namespace Application.Logic
                 if(!username.Equals(dto.UserName))
                 {
                     ValidateUsername(dto.UserName);
-                    User? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
+                    UserEntity? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
 
-                    if (uExisting != null)
-                    {
-                        throw new Exception("Username already in use");
-                    }
+                    //if (uExisting != null)
+                    //{
+                    //    throw new Exception("Username already in use");
+                    //}
                     username = dto.UserName;
                 }
             }
@@ -106,7 +106,7 @@ namespace Application.Logic
             // TODO: Implement recurring availability validation
             Dictionary<string, bool[]> availability = dto.RecurAvailablity;
 
-            User user = new User()
+            UserEntity user = new UserEntity()
             {
                 Id = dto.Id,
                 FullName = existing.FullName,
@@ -121,7 +121,7 @@ namespace Application.Logic
 
         public async Task DeleteAsync(int id)
         {
-            User? existing = await userDAO.GetByIdAsync(id);
+            UserEntity? existing = await userDAO.GetByIdAsync(id);
             if (existing == null)
             {
                 throw new Exception($"User with ID {id} not found!");
@@ -202,7 +202,7 @@ namespace Application.Logic
 
         public async Task<UserBasicDTO> GetByIdAsync(int id)
         {
-            User? existing = await userDAO.GetByIdAsync(id);
+            UserEntity? existing = await userDAO.GetByIdAsync(id);
 
             if(existing == null)
             {
@@ -213,7 +213,7 @@ namespace Application.Logic
 
             return userBasic;
         }
-        public async Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO searchParameters)
+        public async Task<IEnumerable<UserEntity>> GetByParameterAsync(SearchUserParametersDTO searchParameters)
         {
             return await userDAO.GetByParameterAsync(searchParameters);
         }

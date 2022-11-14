@@ -18,11 +18,11 @@ public class TeamsController :ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Team>> CreateAsync(TeamCreateDTO dto)
+    public async Task<ActionResult<TeamEntity>> CreateAsync(TeamCreateDTO dto)
     {
         try
         {
-            Team team = await teamLogic.CreateAsync(dto);
+            TeamEntity team = await teamLogic.CreateAsync(dto);
             return Created($"/teams/{team.Id}", team);
         }
         catch (Exception e)
@@ -33,7 +33,7 @@ public class TeamsController :ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Team>> GetByIdAsync([FromRoute] int id)
+    public async Task<ActionResult<TeamEntity>> GetByIdAsync([FromRoute] int id)
     {   
         try
         {

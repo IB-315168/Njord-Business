@@ -1,6 +1,10 @@
 ﻿using Application.DAOInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Net.Client;
+using GrpcNjordClient;
+using System.Xml.Linq;
 
 namespace Data.DAOs;
 
@@ -8,77 +12,96 @@ namespace Data.DAOs;
 //TODO: Revise irrelevant methods
 public class TeamDAO : ITeamDAO
 {
-    private readonly FileContext context;
+    private readonly TeamService.TeamServiceClient teamService;
 
-    public TeamDAO(FileContext context)
+    public TeamDAO()
     {
-        this.context = context;
+        var channel = GrpcChannel.ForAddress("http://localhost:6565");
+        this.teamService = new TeamService.TeamServiceClient(channel);
     }
-    public Task<Team> CreateAsync(Team team)
+    public async Task<TeamEntity> CreateAsync(TeamEntity team)
     {
-        int teamId = 1;
+        Team createdTeam = await teamService.CreateTeamAsync(new CreatingTeam() { Name = team.Name, TeamLeaderId = team.TeamLeader.Id });
 
-        if (context.Teams.Any())
+
+        if(createdTeam == null)
         {
-            teamId = context.Teams.Max(u => u.Id);
-            teamId++;
+            throw new Exception("Failed to create team");
         }
-        team.Id = teamId;
 
-        context.Teams.Add(team);
-        context.SaveChanges();
+        TeamEntity teamEntity = ConvertToTeamEntity(createdTeam);
 
-        return Task.FromResult(team);
+        return teamEntity;
     }
 
-    public Task DeleteAsync(Team team)
+    public async Task<Task> DeleteAsync(TeamEntity team)
     {
-        Team? existing = context.Teams.FirstOrDefault(t => t.Id == team.Id);
+        TeamEntity? existing = await GetByIdAsync(team.Id);
 
         if (existing == null)
         {
             throw new Exception($"Team with id{team.Id} has not been found");
         }
 
-        context.Teams.Remove(existing);
-        context.SaveChanges();
+        await teamService.DeleteTeamAsync(new Int32Value() { Value = team.Id });
+
         return Task.CompletedTask;
     }
     
-    public Task UpdateAsync(Team team)
+    public async Task<Task> UpdateAsync(TeamEntity team)
     {
-        Team? existing = context.Teams.FirstOrDefault(u => u.Id == team.Id);
+        TeamEntity? existing = await GetByIdAsync(team.Id);
 
         if (existing == null)
         {
-            throw new Exception($"User with id {team.Id} has not been found");
+            throw new Exception($"Team with id{team.Id} has not been found");
         }
 
-        context.Teams.Remove(existing);
-        context.Teams.Add(team);
-        context.SaveChanges();
+        await teamService.UpdateTeamAsync(new UpdatingTeam()
+        {
+            Id = team.Id,
+            Name = team.Name,
+            TeamLeader = UserDAO.ConvertToUser(team.TeamLeader),
+            Members = {UserDAO.ConvertToUsers(team.members)}
+        });
 
         return Task.CompletedTask;
     }
-    public Task<Team?> GetByName(string name)
+    public async Task<TeamEntity?> GetByName(string name)
     {
-        Team? existing = context.Teams.FirstOrDefault(u => u.Name.Equals(name));
-        return Task.FromResult(existing);
+        Team? reply = await teamService.GetByNameAsync(new StringValue() { Value = name });
+
+        if (reply == null) {
+            throw new Exception($"Team with name {name} has not been found.");
+        }
+
+        TeamEntity entity = ConvertToTeamEntity(reply);
+
+        return entity;
     }
 
-    public Task<Team?> GetByIdAsync(int id)
+    public async Task<TeamEntity?> GetByIdAsync(int id)
     {
-        Team? existing = context.Teams.FirstOrDefault(u => u.Id.Equals(id));
-        return Task.FromResult(existing);
+        Team? reply = await teamService.GetByIdAsync(new Int32Value { Value = id });
+
+        if (reply == null)
+        {
+            throw new Exception($"Team with id {id} has not been found.");
+        }
+
+        TeamEntity entity = ConvertToTeamEntity(reply);
+
+        return entity;
     }
 
-    public Task<IEnumerable<Team>> GetByUserIdAsync(int id)
+    public static TeamEntity ConvertToTeamEntity(Team team)
     {
-        IEnumerable<Team> teams = new List<Team>();
-
-        teams = teams.Concat(context.Teams.Where(s => s.TeamLeader.Id == id));
-        teams = teams.Concat(context.Teams.Where(s => s.members.Any(u => u.Id == id)));
-
-        return Task.FromResult(teams);
+        return new TeamEntity()
+        {
+            Id = team.Id,
+            Name = team.Name,
+            TeamLeader = UserDAO.ConvertToUserEntity(team.TeamLeader),
+            members = UserDAO.ConvertToUserEntities(team.Members)
+        };
     }
 }

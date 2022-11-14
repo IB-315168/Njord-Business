@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                User user = await authService.LoginAsync(dto);
+                UserEntity user = await authService.LoginAsync(dto);
                 string token = GenerateJwt(user);
 
                 return Ok(token);
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        private List<Claim> GenerateClaims(User user)
+        private List<Claim> GenerateClaims(UserEntity user)
         {
             var claims = new[]
             {
@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
             return claims.ToList();
         }
 
-        private string GenerateJwt(User user)
+        private string GenerateJwt(UserEntity user)
         {
             List<Claim> claims = GenerateClaims(user);
 

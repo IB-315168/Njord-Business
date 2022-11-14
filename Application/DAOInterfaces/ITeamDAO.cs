@@ -6,11 +6,10 @@ namespace Application.DAOInterfaces;
 //TODO: Revise
 public interface ITeamDAO
 {
-    Task<Team> CreateAsync(Team team);
-    Task DeleteAsync(Team team);
-    Task UpdateAsync(Team team);
+    Task<TeamEntity> CreateAsync(TeamEntity team);
+    Task<Task> DeleteAsync(TeamEntity team);
+    Task<Task> UpdateAsync(TeamEntity team);
     
-    Task<Team> GetByName(string name);
-    Task<Team?> GetByIdAsync(int id);
-    Task<IEnumerable<Team>> GetByUserIdAsync(int id);
+    Task<TeamEntity?> GetByName(string name);
+    Task<TeamEntity?> GetByIdAsync(int id);
 }

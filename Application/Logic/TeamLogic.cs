@@ -18,38 +18,38 @@ public class TeamLogic : ITeamLogic
         this.userDao = userDao;
     }
 
-    public async Task<Team> CreateAsync(TeamCreateDTO dto)
+    public async Task<TeamEntity> CreateAsync(TeamCreateDTO dto)
     {
         ValidateName(dto.Name);
-        Team? eExisting = await teamDao.GetByName(dto.Name);
+        //TeamEntity? eExisting = await teamDao.GetByName(dto.Name);
 
-        if (eExisting != null)
-        {
-            throw new Exception("Name already in use");
-        }
+        //if (eExisting != null)
+        //{
+        //    throw new Exception("Name already in use");
+        //}
 
-        User? existing = await userDao.GetByIdAsync(dto.TeamLeaderId);
+        UserEntity? existing = await userDao.GetByIdAsync(dto.TeamLeaderId);
 
         if (existing == null)
         {
             throw new Exception($"User with id {dto.TeamLeaderId} does not exist");
         }
 
-        Team toCreate = new Team
+        TeamEntity toCreate = new TeamEntity
         {
             Name = dto.Name,
             TeamLeader = existing,
-            members = new List<User>()
+            members = new List<UserEntity>()
         };
 
-        Team created = await teamDao.CreateAsync(toCreate);
+        TeamEntity created = await teamDao.CreateAsync(toCreate);
 
         return created;
     }
 
-    public async Task<Team> GetByIdAsync(int id)
+    public async Task<TeamEntity> GetByIdAsync(int id)
     {
-        Team? existing = await teamDao.GetByIdAsync(id);
+        TeamEntity? existing = await teamDao.GetByIdAsync(id);
         
         if(existing == null)
         {
@@ -61,27 +61,21 @@ public class TeamLogic : ITeamLogic
 
     public async Task<IEnumerable<TeamBasicDTO>> GetByUserIdAsync(int id)
     {
-        User? existing = await userDao.GetByIdAsync(id);
+        UserEntity? existing = await userDao.GetByIdAsync(id);
 
         if (existing == null)
         {
             throw new Exception($"User with id {id} does not exist.");
         }
 
-        List<TeamBasicDTO> teams = new List<TeamBasicDTO>();
-        IEnumerable<Team> teamsFetched = await teamDao.GetByUserIdAsync(id);
-
-        foreach(Team team in teamsFetched)
-        {
-            teams.Add(new TeamBasicDTO(team.Id, team.Name, $"{team.TeamLeader.FullName} ({team.TeamLeader.UserName})"));
-        }
+        IEnumerable<TeamBasicDTO> teams = await userDao.GetUserTeamsAsync(id);
 
         return teams;
     }
 
     public async Task DeleteAsync(int id)
     {
-        Team? existing = await teamDao.GetByIdAsync(id);
+        TeamEntity? existing = await teamDao.GetByIdAsync(id);
         if (existing == null)
         {
             throw new Exception($"Team with ID {id} not found!");
@@ -92,7 +86,7 @@ public class TeamLogic : ITeamLogic
 
     public async Task UpdateAsync(TeamUpdateDTO dto)
     {
-        Team? existing = await teamDao.GetByIdAsync(dto.Id);
+        TeamEntity? existing = await teamDao.GetByIdAsync(dto.Id);
         
         if (existing == null)
         {
@@ -108,7 +102,7 @@ public class TeamLogic : ITeamLogic
                 name = dto.Name;
             }   
         }
-        User teamLeader = existing.TeamLeader;
+        UserEntity teamLeader = existing.TeamLeader;
         //check if new teamleader is part of a team
         if (dto.members.Contains(teamLeader))
         {
@@ -119,12 +113,12 @@ public class TeamLogic : ITeamLogic
             }
         }
 
-        ICollection<User> members = existing.members;
+        ICollection<UserEntity> members = existing.members;
         if (!members.Equals(dto.members))
         {
             members = dto.members;
         }
-        Team updated = new Team()
+        TeamEntity updated = new TeamEntity()
         {
             Id = dto.Id,
             members = dto.members,
@@ -146,7 +140,7 @@ public class TeamLogic : ITeamLogic
         }
     }
 
-    private void ValidateTeamLeader(User teamLeader)
+    private void ValidateTeamLeader(UserEntity teamLeader)
     {
         if (string.IsNullOrEmpty(teamLeader.ToString()))
         {

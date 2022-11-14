@@ -6,8 +6,8 @@ public class TeamUpdateDTO
 {
     public int Id { get;  }
     public string Name { get; set; }
-    public User TeamLeader { get; set; }
-    public ICollection<User> members { get; set; }
+    public UserEntity TeamLeader { get; set; }
+    public ICollection<UserEntity> members { get; set; }
 
     public TeamUpdateDTO(int id)
     {

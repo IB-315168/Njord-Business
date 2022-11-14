@@ -10,10 +10,10 @@ namespace Application.LogicInterfaces
 {
     public interface IUserLogic
     {
-        Task<User> CreateAsync(UserCreateDTO dto);
+        Task<UserEntity> CreateAsync(UserCreateDTO dto);
         Task<UserBasicDTO> GetByIdAsync(int id);
         Task UpdateAsync(UserUpdateDTO dto);
         Task DeleteAsync(int id);
-        Task<IEnumerable<User>> GetByParameterAsync(SearchUserParametersDTO searchParameters);
+        Task<IEnumerable<UserEntity>> GetByParameterAsync(SearchUserParametersDTO searchParameters);
     }
 }
