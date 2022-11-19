@@ -23,12 +23,12 @@ namespace Application.Logic
         {
             ValidateData(dto);
 
-            UserEntity? eExisting = await userDAO.GetByEmailAsync(dto.Email);
+            //UserEntity? eExisting = await userDAO.GetByEmailAsync(dto.Email);
 
-            if (eExisting != null)
-            {
-                throw new Exception("E-mail address already in use");
-            }
+            //if (eExisting != null)
+            //{
+            //    throw new Exception("E-mail address already in use");
+            //}
 
             //UserEntity? uExisting = await userDAO.GetByUserNameAsync(dto.UserName);
 

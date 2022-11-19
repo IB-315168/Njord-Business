@@ -1,6 +1,7 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,11 @@ namespace WebAPI.Controllers
             {
                 UserEntity user = await userLogic.CreateAsync(dto);
                 return Created($"/users/{user.Id}", user);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Status.Detail);
             }
             catch (Exception e)
             {
