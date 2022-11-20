@@ -47,6 +47,11 @@ namespace WebAPI.Controllers
             {
                 return await userLogic.GetByIdAsync(id);
             }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Status.Detail);
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -61,6 +66,11 @@ namespace WebAPI.Controllers
             {
                 await userLogic.UpdateAsync(dto);
                 return Ok();
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Status.Detail);
             }
             catch (Exception e)
             {
@@ -77,6 +87,11 @@ namespace WebAPI.Controllers
                 await userLogic.DeleteAsync(id);
                 return Ok();
             }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Status.Detail);
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -91,6 +106,11 @@ namespace WebAPI.Controllers
                 SearchUserParametersDTO parameters = new(username, email, fullname);
                 IEnumerable<UserEntity> users = await userLogic.GetByParameterAsync(parameters);
                 return Ok(users);
+            }
+            catch (RpcException e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Status.Detail);
             }
             catch (Exception e)
             {

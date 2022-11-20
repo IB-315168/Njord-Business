@@ -1,6 +1,7 @@
 ﻿using Application.LogicInterfaces;
 using Domain.DTOs;
 using Domain.Models;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,11 @@ public class TeamsController :ControllerBase
             TeamEntity team = await teamLogic.CreateAsync(dto);
             return Created($"/teams/{team.Id}", team);
         }
+        catch (RpcException e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Status.Detail);
+        }
         catch (Exception e)
         {
             Console.WriteLine(e);
@@ -38,6 +44,11 @@ public class TeamsController :ControllerBase
         try
         {
             return await teamLogic.GetByIdAsync(id);
+        }
+        catch (RpcException e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Status.Detail);
         }
         catch (Exception e)
         {
@@ -54,6 +65,11 @@ public class TeamsController :ControllerBase
             IEnumerable<TeamBasicDTO> teams = await teamLogic.GetByUserIdAsync(userId);
             return Ok(teams);
         }
+        catch (RpcException e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Status.Detail);
+        }
         catch (Exception e)
         {
             Console.WriteLine(e);
@@ -68,6 +84,11 @@ public class TeamsController :ControllerBase
             await teamLogic.DeleteAsync(id);
             return Ok();
         }
+        catch (RpcException e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Status.Detail);
+        }
         catch (Exception e)
         {
             Console.WriteLine(e);
@@ -81,6 +102,11 @@ public class TeamsController :ControllerBase
         {
             await teamLogic.UpdateAsync(dto);
             return Ok();
+        }
+        catch (RpcException e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Status.Detail);
         }
         catch (Exception e)
         {
