@@ -36,13 +36,6 @@ public class TeamDAO : ITeamDAO
 
     public async Task<Task> DeleteAsync(TeamEntity team)
     {
-        TeamEntity? existing = await GetByIdAsync(team.Id);
-
-        if (existing == null)
-        {
-            throw new Exception($"Team with id{team.Id} has not been found");
-        }
-
         await teamService.DeleteTeamAsync(new Int32Value() { Value = team.Id });
 
         return Task.CompletedTask;
@@ -50,13 +43,6 @@ public class TeamDAO : ITeamDAO
     
     public async Task<Task> UpdateAsync(TeamEntity team)
     {
-        TeamEntity? existing = await GetByIdAsync(team.Id);
-
-        if (existing == null)
-        {
-            throw new Exception($"Team with id{team.Id} has not been found");
-        }
-
         await teamService.UpdateTeamAsync(new UpdatingTeam()
         {
             Id = team.Id,
@@ -71,10 +57,6 @@ public class TeamDAO : ITeamDAO
     {
         Team? reply = await teamService.GetByNameAsync(new StringValue() { Value = name });
 
-        if (reply == null) {
-            throw new Exception($"Team with name {name} has not been found.");
-        }
-
         TeamEntity entity = ConvertToTeamEntity(reply);
 
         return entity;
@@ -83,11 +65,6 @@ public class TeamDAO : ITeamDAO
     public async Task<TeamEntity?> GetByIdAsync(int id)
     {
         Team? reply = await teamService.GetByIdAsync(new Int32Value { Value = id });
-
-        if (reply == null)
-        {
-            throw new Exception($"Team with id {id} has not been found.");
-        }
 
         TeamEntity entity = ConvertToTeamEntity(reply);
 

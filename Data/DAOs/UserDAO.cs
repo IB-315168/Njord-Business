@@ -55,13 +55,6 @@ public class UserDAO : IUserDAO
 
     public async Task<Task> DeleteAsync(UserEntity user)
     {
-        UserEntity? existing = await GetByIdAsync(user.Id);
-
-        if (existing == null)
-        {
-            throw new Exception($"User with id {user.Id} has not been found");
-        }
-
         await userService.DeleteUserAsync(new Int32Value() { Value = user.Id });
 
         return Task.CompletedTask;
@@ -71,11 +64,6 @@ public class UserDAO : IUserDAO
     {
         User? existing = await userService.GetByEmailAsync(new StringValue() { Value = eMail });
 
-        if (existing == null)
-        {
-            throw new Exception($"User with email {eMail} has not been found.");
-        }
-
         UserEntity userEntity = ConvertToUserEntity(existing);
 
         return userEntity;
@@ -84,11 +72,6 @@ public class UserDAO : IUserDAO
     public async Task<UserEntity?> GetByIdAsync(int id)
     {
         User? existing = await userService.GetByIdAsync(new Int32Value() { Value = id} );
-
-        if(existing == null)
-        {
-            throw new Exception($"User with id {id} has not been found.");
-        }
 
         UserEntity userEntity = ConvertToUserEntity(existing);
 
@@ -187,11 +170,6 @@ public class UserDAO : IUserDAO
     public async Task<IEnumerable<TeamBasicDTO>> GetUserTeamsAsync(int id)
     {
         User? existing = await userService.GetByIdAsync(new Int32Value() { Value = id });
-
-        if (existing == null)
-        {
-            throw new Exception($"User with id {id} has not been found.");
-        }
 
         List<TeamBasicDTO> teams = new List<TeamBasicDTO>();
 
