@@ -57,60 +57,21 @@
       "Password": "Test1!"
     },
     {
-      "Id": 6,
-      "FullName": "Igor Bulinski",
-      "Email": "test_acc1@gmail.com",
-      "UserName": "igor_bu#5",
-      "Password": "Test1!"
-    },
-    {
       "Id": 5,
       "FullName": "Test Igor",
       "Email": "test_acc@gmail.com",
       "UserName": "igor_JwtAuth",
       "Password": "Test1!"
+    },
+    {
+      "Id": 6,
+      "FullName": "Igor Bulinski",
+      "Email": "test_acc1@gmail.com",
+      "UserName": "igor_bu#6",
+      "Password": "Test1!"
     }
   ],
   "Teams": [
-    {
-      "Id": 1,
-      "Name": "Testing Team",
-      "TeamLeader": {
-        "Id": 6,
-        "FullName": "Igor Bulinski",
-        "Email": "test_acc1@gmail.com",
-        "UserName": "igor_bu#5",
-        "Password": "Test1!"
-      },
-      "members": [
-        {
-          "Id": 5,
-          "FullName": "Test Igor",
-          "Email": "test_acc@gmail.com",
-          "UserName": "test_ig#3",
-          "Password": "Test1!"
-        },
-        {
-          "Id": 10,
-          "FullName": "string asdfds",
-          "Email": "string5678@gmail.com",
-          "UserName": "string",
-          "Password": "Test1!"
-        }
-      ]
-    },
-    {
-      "Id": 3,
-      "Name": "Context Test 2",
-      "TeamLeader": {
-        "Id": 6,
-        "FullName": "Igor Bulinski",
-        "Email": "test_acc1@gmail.com",
-        "UserName": "igor_bu#5",
-        "Password": "Test1!"
-      },
-      "members": []
-    },
     {
       "Id": 2,
       "Name": "Context Test w Edit",
@@ -133,6 +94,74 @@
           "Id": 9,
           "FullName": "string asdfds",
           "Email": "string7890@gmail.com",
+          "UserName": "string",
+          "Password": "Test1!"
+        },
+        {
+          "Id": 7,
+          "FullName": "string asdafs",
+          "Email": "string1234@gmail.com",
+          "UserName": "string",
+          "Password": "Test1!"
+        }
+      ]
+    },
+    {
+      "Id": 3,
+      "Name": "Context Test 2",
+      "TeamLeader": {
+        "Id": 6,
+        "FullName": "Igor Bulinski",
+        "Email": "test_acc1@gmail.com",
+        "UserName": "igor_bu#5",
+        "Password": "Test1!"
+      },
+      "members": [
+        {
+          "Id": 9,
+          "FullName": "string asdfds",
+          "Email": "string7890@gmail.com",
+          "UserName": "string",
+          "Password": "Test1!"
+        },
+        {
+          "Id": 3,
+          "FullName": "Igor Bulinski",
+          "Email": "string12@gmail.com",
+          "UserName": "igor_bu#3",
+          "Password": "stringA1!"
+        },
+        {
+          "Id": 8,
+          "FullName": "string asddas",
+          "Email": "string5678@gmail.com",
+          "UserName": "string",
+          "Password": "Test1!"
+        }
+      ]
+    },
+    {
+      "Id": 1,
+      "Name": "Testing Team",
+      "TeamLeader": {
+        "Id": 6,
+        "FullName": "Igor Bulinski",
+        "Email": "test_acc1@gmail.com",
+        "UserName": "igor_bu#5",
+        "Password": "Test1!"
+      },
+      "members": [
+        {
+          "Id": 5,
+          "FullName": "Test Igor",
+          "Email": "test_acc@gmail.com",
+          "UserName": "test_ig#3",
+          "Password": "Test1!"
+        },
+        {
+          "Id": 10,
+          "FullName": "string asdfds",
+          "Email": "string5678@gmail.com",
           "UserName": "string",
           "Password": "Test1!"
         },

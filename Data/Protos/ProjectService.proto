@@ -1,0 +1,51 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+option java_multiple_files = true;
+option csharp_namespace = "GRPCProjectClient";
+package com.sep3yg9.njorddata.grpc.protobuf.project;
+
+message CreatingProject {
+  string name = 1;
+  int32 teamId = 2;
+  SpecificTime deadline = 3;
+}
+
+message UpdatingProject {
+  int32 id = 1;
+  string name = 2;
+  SpecificTime deadline = 3;
+  repeated Requirement requirements = 4;
+}
+
+message SpecificTime {
+  int32 day = 1;
+  int32 month = 2;
+  int32 year = 3;
+  int32 hour = 4;
+  int32 minute = 5;
+}
+
+message Requirement {
+  int32 id = 1;
+  int32 idproject = 2;
+  string content = 3;
+}
+
+message Project {
+  int32 id = 1;
+  string name = 2;
+  int32 teamId = 3;
+  SpecificTime startDate = 4;
+  SpecificTime deadline = 5;
+  repeated Requirement requirements = 6;
+}
+
+service ProjectService {
+  rpc CreateProject(CreatingProject) returns (Project);
+  rpc UpdateProject(UpdatingProject) returns (Project);
+  rpc DeleteProject(google.protobuf.Int32Value) returns (google.protobuf.Empty);
+  rpc GetById(google.protobuf.Int32Value) returns (Project);
+}
+
