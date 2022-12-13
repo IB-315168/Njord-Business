@@ -1,4 +1,4 @@
-﻿using Domain.DTOs;
+﻿using Domain.DTOs.Member;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,6 @@ namespace Application.LogicInterfaces
 {
     public interface IAuthService
     {
-        Task<UserEntity> LoginAsync(UserLoginDTO dto);
+        Task<MemberEntity> LoginAsync(MemberLoginDTO dto);
     }
 }

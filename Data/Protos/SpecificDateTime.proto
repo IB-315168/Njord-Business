@@ -1,0 +1,24 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option csharp_namespace = "GrpcNjordClient.SpecificDateTime";
+package com.sep3yg9.njorddata.grpc.protobuf.specificdatetime;
+
+message SpecificDate {
+  int32 day = 1;
+  int32 month = 2;
+  int32 year = 3;
+}
+
+message SpecificDateTime {
+  int32 day = 1;
+  int32 month = 2;
+  int32 year = 3;
+  int32 hour = 4;
+  int32 minute = 5;
+}
+
+message SpecificTime {
+  int32 hour = 1;
+  int32 minute = 2;
+  int32 second = 3;
+}

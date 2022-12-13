@@ -1,7 +1,7 @@
 syntax = "proto3";
 option java_multiple_files = true;
-import "Protos/UserService.proto";
-option csharp_namespace = "GrpcNjordClient";
+import "Protos/MemberService.proto";
+option csharp_namespace = "GrpcNjordClient.Auth";
 package com.sep3yg9.njorddata.grpc.protobuf.auth;
 
 message LoginRequest {
@@ -10,5 +10,5 @@ message LoginRequest {
 }
 
 service AuthService {
-  rpc Login(LoginRequest) returns (com.sep3yg9.njorddata.grpc.protobuf.user.User);
+  rpc Login(LoginRequest) returns (com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc);
 }

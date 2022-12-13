@@ -3,17 +3,16 @@ using Domain.DTOs;
 using Domain.Models;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Net.Client;
-using GrpcNjordClient;
+using GrpcNjordClient.Team;
 using System.Xml.Linq;
+using GrpcNjordClient.Member;
 
 namespace Data.DAOs;
 
-
-//TODO: Revise irrelevant methods
 public class TeamDAO : ITeamDAO
 {
     private readonly TeamService.TeamServiceClient teamService;
-
+    
     public TeamDAO()
     {
         var channel = GrpcChannel.ForAddress("http://localhost:6565");
@@ -21,7 +20,7 @@ public class TeamDAO : ITeamDAO
     }
     public async Task<TeamEntity> CreateAsync(TeamEntity team)
     {
-        Team createdTeam = await teamService.CreateTeamAsync(new CreatingTeam() { Name = team.Name, TeamLeaderId = team.TeamLeader.Id });
+        TeamGrpc createdTeam = await teamService.CreateTeamAsync(new CreatingTeam() { Name = team.Name, TeamLeaderId = team.TeamLeader.Id });
 
 
         if(createdTeam == null)
@@ -47,15 +46,15 @@ public class TeamDAO : ITeamDAO
         {
             Id = team.Id,
             Name = team.Name,
-            TeamLeader = UserDAO.ConvertToUser(team.TeamLeader),
-            Members = {UserDAO.ConvertToUsers(team.members)}
+            TeamLeader = MemberDAO.ConvertToMember(team.TeamLeader),
+            Members = {MemberDAO.ConvertToMembers(team.members)}
         });
 
         return Task.CompletedTask;
     }
     public async Task<TeamEntity?> GetByName(string name)
     {
-        Team? reply = await teamService.GetByNameAsync(new StringValue() { Value = name });
+        TeamGrpc? reply = await teamService.GetByNameAsync(new StringValue() { Value = name });
 
         TeamEntity entity = ConvertToTeamEntity(reply);
 
@@ -64,21 +63,21 @@ public class TeamDAO : ITeamDAO
 
     public async Task<TeamEntity?> GetByIdAsync(int id)
     {
-        Team? reply = await teamService.GetByIdAsync(new Int32Value { Value = id });
+        TeamGrpc? reply = await teamService.GetByIdAsync(new Int32Value { Value = id });
 
         TeamEntity entity = ConvertToTeamEntity(reply);
 
         return entity;
     }
 
-    public static TeamEntity ConvertToTeamEntity(Team team)
+    public static TeamEntity ConvertToTeamEntity(TeamGrpc team)
     {
         return new TeamEntity()
         {
             Id = team.Id,
             Name = team.Name,
-            TeamLeader = UserDAO.ConvertToUserEntity(team.TeamLeader),
-            members = UserDAO.ConvertToUserEntities(team.Members)
+            TeamLeader = MemberDAO.ConvertToMemberEntity(team.TeamLeader),
+            members = MemberDAO.ConvertToMemberEntities(team.Members)
         };
     }
 }

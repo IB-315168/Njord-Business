@@ -1,6 +1,6 @@
 ﻿using Application.DAOInterfaces;
 using Application.LogicInterfaces;
-using Domain.DTOs;
+using Domain.DTOs.Member;
 using Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -12,17 +12,17 @@ namespace Application.Logic
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserDAO userDAO;
+        private readonly IMemberDAO memberDAO;
 
-        public AuthService(IUserDAO userDAO)
+        public AuthService(IMemberDAO memberDAO)
         {
-            this.userDAO = userDAO;
+            this.memberDAO = memberDAO;
         }
-        public async Task<UserEntity> LoginAsync(UserLoginDTO dto)
+        public async Task<MemberEntity> LoginAsync(MemberLoginDTO dto)
         {
-            UserLogic.ValidateEmail(dto.Email);
+            MemberLogic.ValidateEmail(dto.Email);
 
-            UserEntity? existing = await userDAO.GetByEmailAsync(dto.Email);
+            MemberEntity? existing = await memberDAO.GetByEmailAsync(dto.Email);
 
             if (existing == null)
             {

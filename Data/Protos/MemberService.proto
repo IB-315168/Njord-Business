@@ -1,0 +1,72 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "Protos/SpecificDateTime.proto";
+option java_multiple_files = true;
+option csharp_namespace = "GrpcNjordClient.Member";
+package com.sep3yg9.njorddata.grpc.protobuf.member;
+
+message CreatingMember {
+  string fullName = 1;
+  string userName = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message UpdatingMember {
+  int32 id = 1;
+  string userName = 2;
+  string email = 3;
+  string password = 4;
+  repeated MemberAvailabilityGrpc availability = 5;
+}
+
+message SearchingMember {
+  string userName = 1;
+  string email = 2;
+  string fullName = 3;
+}
+
+message BasicMember {
+  string fullName = 1;
+  string userName = 2;
+  string email = 3;
+}
+
+message BasicTeam {
+  int32 id = 1;
+  string name = 2;
+  string teamLeaderName = 3;
+}
+
+message MemberAvailabilityGrpc{
+  int32 id = 1;
+  int32 assignedmember = 2;
+  int32 dayofweek = 3;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificTime starthour = 4;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificTime endhour = 5;
+}
+
+message MemberGrpc {
+  int32 id = 1;
+  string fullName = 2;
+  string email = 3;
+  string userName = 4;
+  string password = 5;
+  repeated BasicTeam memberTeams = 6;
+  repeated MemberAvailabilityGrpc availability = 7;
+}
+
+message MemberList {
+  repeated MemberGrpc member = 1;
+}
+
+
+service MemberService {
+  rpc CreateMember(CreatingMember) returns (MemberGrpc);
+  rpc UpdateMember(UpdatingMember) returns (google.protobuf.Empty);
+  rpc DeleteMember(google.protobuf.Int32Value) returns (google.protobuf.Empty);
+  rpc GetByEmail(google.protobuf.StringValue) returns (MemberGrpc);
+  rpc GetById(google.protobuf.Int32Value) returns (MemberGrpc);
+  rpc SearchMember(SearchingMember) returns (MemberList);
+}

@@ -1,6 +1,5 @@
 ﻿using Application.Logic;
 using Application.LogicInterfaces;
-using Domain.DTOs;
 using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain.DTOs.Member;
 
 namespace WebAPI.Controllers
 {
@@ -24,13 +24,19 @@ namespace WebAPI.Controllers
             this.authService = authService;
         }
 
+
+        /// <summary>
+        /// Generates Auth token for valid log in request.
+        /// </summary>
+        /// <param name="dto">DTO containing email and password of member</param>
+        /// <returns>JWT Token generated for a member</returns>
         [HttpPost]
-        public async Task<ActionResult> LoginAsync(UserLoginDTO dto)
+        public async Task<ActionResult> LoginAsync(MemberLoginDTO dto)
         {
             try
             {
-                UserEntity user = await authService.LoginAsync(dto);
-                string token = GenerateJwt(user);
+                MemberEntity member = await authService.LoginAsync(dto);
+                string token = GenerateJwt(member);
 
                 return Ok(token);
             }
@@ -41,26 +47,26 @@ namespace WebAPI.Controllers
             }
         }
 
-        private List<Claim> GenerateClaims(UserEntity user)
+        private List<Claim> GenerateClaims(MemberEntity member)
         {
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, config["Jwt:Subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.PrimarySid, user.Id.ToString(), ClaimValueTypes.Integer),
-                new Claim("Id", user.Id.ToString()),
-                new Claim("UserName", user.UserName),
-                new Claim("Email", user.Email),
-                new Claim("FullName", user.FullName)
+                new Claim(ClaimTypes.Name, member.UserName),
+                new Claim(ClaimTypes.PrimarySid, member.Id.ToString(), ClaimValueTypes.Integer),
+                new Claim("Id", member.Id.ToString()),
+                new Claim("UserName", member.UserName),
+                new Claim("Email", member.Email),
+                new Claim("FullName", member.FullName)
             };
             return claims.ToList();
         }
 
-        private string GenerateJwt(UserEntity user)
+        private string GenerateJwt(MemberEntity member)
         {
-            List<Claim> claims = GenerateClaims(user);
+            List<Claim> claims = GenerateClaims(member);
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             SigningCredentials signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);

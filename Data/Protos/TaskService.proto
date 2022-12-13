@@ -1,0 +1,58 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "Protos/MemberService.proto";
+import "Protos/SpecificDateTime.proto";
+option java_multiple_files = true;
+option csharp_namespace = "GrpcNjordClient.Task";
+package com.sep3yg9.njorddata.grpc.protobuf.task;
+
+message CreatingTask {
+  int32 memberassigned = 1;
+  int32 projectAssigned = 2;
+  string title = 3;
+  string description = 4;
+  string status = 5;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificTime timeestimation = 6;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime creationdate = 7;
+}
+
+message UpdatingTask {
+  int32 id = 1;
+  int32 memberassigned = 2;
+  string title = 3;
+  string description = 4;
+  string status = 5;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificTime timeestimation = 6;
+}
+
+message TaskGrpc {
+  int32 id = 1;
+  com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc memberassigned = 2;
+  int32 projectAssigned = 3;
+  string title = 4;
+  string description = 5;
+  string status = 6;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificTime timeestimation = 7;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime creationdate = 8;
+}
+
+message BasicTask {
+  int32 id = 1;
+  string title = 2;
+  string status = 3;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime creationdate = 4;
+}
+
+message GrpcTaskList {
+  repeated TaskGrpc tasksList = 1;
+}
+
+
+service TaskService {
+  rpc CreateTask(CreatingTask) returns (TaskGrpc);
+  rpc UpdateTask(UpdatingTask) returns (TaskGrpc);
+  rpc DeleteTask(google.protobuf.Int32Value) returns (google.protobuf.Empty);
+  rpc GetById(google.protobuf.Int32Value) returns (TaskGrpc);
+  rpc GetByProjectId(google.protobuf.Int32Value) returns (GrpcTaskList);
+}

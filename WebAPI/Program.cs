@@ -18,11 +18,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IUserDAO, UserDAO>();
+builder.Services.AddScoped<IMemberDAO, MemberDAO>();
 builder.Services.AddScoped<ITeamDAO, TeamDAO>();
-builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IProjectDAO, ProjectDAO>();
+builder.Services.AddScoped<IMeetingDAO, MeetingDAO>();
+builder.Services.AddScoped<ITaskDAO, TaskDAO>();
+builder.Services.AddScoped<ILogBookDAO, LogBookDAO>();
+
+builder.Services.AddScoped<IMemberLogic, MemberLogic>();
 builder.Services.AddScoped<ITeamLogic, TeamLogic>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProjectLogic, ProjectLogic>();
+builder.Services.AddScoped<IMeetingLogic, MeetingLogic>();
+builder.Services.AddScoped<ITaskLogic, TaskLogic>();
+builder.Services.AddScoped<ILogBookLogic, LogBookLogic>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -37,8 +46,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
-AuthorizationPolicies.AddPolicies(builder.Services);
 
 var app = builder.Build();
 

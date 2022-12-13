@@ -5,6 +5,6 @@ public class TeamEntity
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public UserEntity TeamLeader { get; set; }
-    public ICollection<UserEntity> members { get; set; }
+    public MemberEntity TeamLeader { get; set; }
+    public ICollection<MemberEntity> members { get; set; }
 }

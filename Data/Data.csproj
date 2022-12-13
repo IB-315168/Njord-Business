@@ -19,12 +19,15 @@
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="Protos\UserService.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\AuthService.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\TeamService.proto" GrpcServices="Client" />
-	<Protobuf Include="Protos\ProjectService.proto" GrpcServices="Client" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<Protobuf Include="Protos\MemberService.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\SpecificDateTime.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\AuthService.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\TeamService.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\ProjectService.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\MeetingService.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\TaskService.proto" GrpcServices="Client" />
+        <Protobuf Include="Protos\LogBookService.proto" GrpcServices="Client" />
+	</ItemGroup>
 
 </Project>

@@ -3,7 +3,6 @@ using Domain.Models;
 
 namespace Application.DAOInterfaces;
 
-//TODO: Revise
 public interface ITeamDAO
 {
     Task<TeamEntity> CreateAsync(TeamEntity team);

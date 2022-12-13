@@ -1,0 +1,54 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "Protos/MemberService.proto";
+import "Protos/SpecificDateTime.proto";
+option java_multiple_files = true;
+option csharp_namespace = "GrpcNjordClient.Meeting";
+package com.sep3yg9.njorddata.grpc.protobuf.meeting;
+
+message CreatingMeeting {
+  int32 assignedleader = 1;
+  int32 projectAssigned = 2;
+  string title = 3;
+  string description = 4;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime startdate = 5;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime enddate = 6;
+}
+
+message UpdatingMeeting {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime startdate = 4;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime enddate = 5;
+}
+
+message MeetingGrpc {
+  int32 id = 1;
+  com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc assignedleader = 2;
+  string title = 3;
+  string description = 4;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime startdate = 5;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime enddate = 6;
+}
+
+message BasicMeeting {
+  int32 id = 1;
+  string title = 2;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime startdate = 3;
+  com.sep3yg9.njorddata.grpc.protobuf.specificdatetime.SpecificDateTime enddate = 4;
+}
+
+message GrpcMeetingList {
+  repeated MeetingGrpc meetingList = 1;
+}
+
+
+service MeetingService{
+  rpc CreateMeeting(CreatingMeeting) returns (MeetingGrpc);
+  rpc UpdateMeeting(UpdatingMeeting) returns (MeetingGrpc);
+  rpc DeleteMeeting(google.protobuf.Int32Value) returns (google.protobuf.Empty);
+  rpc GetById(google.protobuf.Int32Value) returns (MeetingGrpc);
+  rpc GetByProjectId(google.protobuf.Int32Value) returns (GrpcMeetingList);
+}

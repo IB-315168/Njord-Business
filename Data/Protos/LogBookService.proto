@@ -1,0 +1,38 @@
+﻿syntax = 'proto3';
+import "Protos/ProjectService.proto";
+import "Protos/MeetingService.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+option java_multiple_files = true;
+option csharp_namespace = "GrpcNjordClient.LogBook";
+package com.sep3yg9.njorddata.grpc.protobuf.logbook;
+
+message CreatingLogBook{
+  int32 projectassigned = 1;
+}
+
+message UpdatingLogBook{
+  int32 id = 1;
+  repeated LogBookEntryGrpc logbookentries = 2;
+}
+
+message LogBookEntryGrpc{
+  int32 id = 1;
+  int32 assignedlogbook = 2;
+  com.sep3yg9.njorddata.grpc.protobuf.meeting.MeetingGrpc assignedmeeting = 3;
+  string contents = 4;
+}
+
+message LogBookGrpc{
+  int32 id = 1;
+  com.sep3yg9.njorddata.grpc.protobuf.project.ProjectGrpc projectassigned = 2;
+  repeated LogBookEntryGrpc logbookentries = 3;
+}
+
+service LogBookService{
+  rpc CreateLogBook(CreatingLogBook) returns (LogBookGrpc);
+  rpc UpdateLogBook(UpdatingLogBook) returns (LogBookGrpc);
+  rpc DeleteLogBookByProjectId(google.protobuf.Int32Value) returns (google.protobuf.Empty);
+  rpc GetById(google.protobuf.Int32Value) returns (LogBookGrpc);
+  rpc GetByProjectId(google.protobuf.Int32Value) returns (LogBookGrpc);
+}

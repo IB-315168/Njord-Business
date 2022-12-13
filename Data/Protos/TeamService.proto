@@ -1,9 +1,9 @@
 syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
-import "Protos/UserService.proto";
+import "Protos/MemberService.proto";
 option java_multiple_files = true;
-option csharp_namespace = "GrpcNjordClient";
+option csharp_namespace = "GrpcNjordClient.Team";
 package com.sep3yg9.njorddata.grpc.protobuf.team;
 
 message CreatingTeam {
@@ -14,8 +14,8 @@ message CreatingTeam {
 message UpdatingTeam {
   int32 id = 1;
   string name = 2;
-  com.sep3yg9.njorddata.grpc.protobuf.user.User teamLeader = 3;
-  repeated com.sep3yg9.njorddata.grpc.protobuf.user.User members = 4;
+  com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc teamLeader = 3;
+  repeated com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc members = 4;
 }
 
 message BasicTeam {
@@ -24,22 +24,23 @@ message BasicTeam {
   string teamLeaderName = 3;
 }
 
-message Team {
+message TeamGrpc {
   int32 id = 1;
   string name = 2;
-  com.sep3yg9.njorddata.grpc.protobuf.user.User teamLeader = 3;
-  repeated com.sep3yg9.njorddata.grpc.protobuf.user.User members = 4;
+  com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc teamLeader = 3;
+  repeated com.sep3yg9.njorddata.grpc.protobuf.member.MemberGrpc members = 4;
 }
 
 message TeamList {
   repeated BasicTeam team = 1;
 }
 
+
 service TeamService {
-  rpc CreateTeam(CreatingTeam) returns (Team);
+  rpc CreateTeam(CreatingTeam) returns (TeamGrpc);
   rpc DeleteTeam(google.protobuf.Int32Value) returns (google.protobuf.Empty);
   rpc UpdateTeam(UpdatingTeam) returns (google.protobuf.Empty);
-  rpc GetByName(google.protobuf.StringValue) returns (Team);
-  rpc GetById(google.protobuf.Int32Value) returns (Team);
+  rpc GetByName(google.protobuf.StringValue) returns (TeamGrpc);
+  rpc GetById(google.protobuf.Int32Value) returns (TeamGrpc);
   rpc GetByUserId(google.protobuf.Int32Value) returns (TeamList);
 }

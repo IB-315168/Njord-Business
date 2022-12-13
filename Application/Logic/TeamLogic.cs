@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Application.DAOInterfaces;
 using Application.LogicInterfaces;
-using Domain.DTOs;
+using Domain.DTOs.Team;
 using Domain.Models;
 
 namespace Application.Logic;
@@ -10,36 +10,30 @@ namespace Application.Logic;
 public class TeamLogic : ITeamLogic
 {
     private readonly ITeamDAO teamDao;
-    private readonly IUserDAO userDao;
+    private readonly IMemberDAO memberDao;
     
-    public TeamLogic(ITeamDAO teamDAO,IUserDAO userDao)
+    public TeamLogic(ITeamDAO teamDAO,IMemberDAO memberDao)
     {
         this.teamDao = teamDAO;
-        this.userDao = userDao;
+        this.memberDao = memberDao;
     }
 
     public async Task<TeamEntity> CreateAsync(TeamCreateDTO dto)
     {
         ValidateName(dto.Name);
-        //TeamEntity? eExisting = await teamDao.GetByName(dto.Name);
 
-        //if (eExisting != null)
-        //{
-        //    throw new Exception("Name already in use");
-        //}
-
-        UserEntity? existing = await userDao.GetByIdAsync(dto.TeamLeaderId);
+        MemberEntity? existing = await memberDao.GetByIdAsync(dto.TeamLeaderId);
 
         if (existing == null)
         {
-            throw new Exception($"User with id {dto.TeamLeaderId} does not exist");
+            throw new Exception($"Member with id {dto.TeamLeaderId} does not exist");
         }
 
         TeamEntity toCreate = new TeamEntity
         {
             Name = dto.Name,
             TeamLeader = existing,
-            members = new List<UserEntity>()
+            members = new List<MemberEntity>()
         };
 
         TeamEntity created = await teamDao.CreateAsync(toCreate);
@@ -59,16 +53,16 @@ public class TeamLogic : ITeamLogic
         return existing;
     }
 
-    public async Task<IEnumerable<TeamBasicDTO>> GetByUserIdAsync(int id)
+    public async Task<IEnumerable<TeamBasicDTO>> GetByMemberIdAsync(int id)
     {
-        UserEntity? existing = await userDao.GetByIdAsync(id);
+        MemberEntity? existing = await memberDao.GetByIdAsync(id);
 
         if (existing == null)
         {
-            throw new Exception($"User with id {id} does not exist.");
+            throw new Exception($"Member with id {id} does not exist.");
         }
 
-        IEnumerable<TeamBasicDTO> teams = await userDao.GetUserTeamsAsync(id);
+        IEnumerable<TeamBasicDTO> teams = await memberDao.GetMemberTeamsAsync(id);
 
         return teams;
     }
@@ -102,7 +96,7 @@ public class TeamLogic : ITeamLogic
                 name = dto.Name;
             }   
         }
-        UserEntity teamLeader = existing.TeamLeader;
+        MemberEntity teamLeader = existing.TeamLeader;
         //check if new teamleader is part of a team
         if (dto.members.Contains(teamLeader))
         {
@@ -113,7 +107,7 @@ public class TeamLogic : ITeamLogic
             }
         }
 
-        ICollection<UserEntity> members = existing.members;
+        ICollection<MemberEntity> members = existing.members;
         if (!members.Equals(dto.members))
         {
             members = dto.members;
@@ -140,7 +134,7 @@ public class TeamLogic : ITeamLogic
         }
     }
 
-    private void ValidateTeamLeader(UserEntity teamLeader)
+    private void ValidateTeamLeader(MemberEntity teamLeader)
     {
         if (string.IsNullOrEmpty(teamLeader.ToString()))
         {

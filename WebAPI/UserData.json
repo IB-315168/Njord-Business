@@ -69,6 +69,13 @@
       "Email": "test_acc1@gmail.com",
       "UserName": "igor_bu#6",
       "Password": "Test1!"
+    },
+    {
+      "Id": 12,
+      "FullName": "Franek Nurkiewicz",
+      "Email": "changedUnique@gmail.com",
+      "UserName": "changed3",
+      "Password": "Test1!"
     }
   ],
   "Teams": [
