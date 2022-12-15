@@ -17,9 +17,9 @@ public class ProjectConverter
         }
 
         return new ProjectEntity(project.Id, project.Name, TeamDAO.ConvertToTeamEntity(project.TeamId),
-            SpecificDateTimeConverter.convertToDateTime(project.Deadline))
+            SpecificDateTimeConverter.convertToDateTime(project.StartDate))
         {
-            StartDate = SpecificDateTimeConverter.convertToDateTime(project.StartDate),
+            Deadline = SpecificDateTimeConverter.convertToDateTime(project.Deadline),
             Requirements = requirements
         };
     }
